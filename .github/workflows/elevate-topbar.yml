@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Expose technology CV and technical capabilities
+      - name: Expose technology CV and executive proficiency matrix
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -21,7 +21,6 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Add a visible, direct CV link to the main navigation exactly once.
           if 'href="technology-cv.html"' not in s:
               nav_link = '<a class="cvLink" href="technology-cv.html">TECH CV ↗</a>'
               if '</nav>' in s:
@@ -31,24 +30,25 @@ jobs:
                   if marker in s:
                       s = s.replace(marker, nav_link + marker, 1)
 
-          # Ensure the CV link is visually consistent with the executive navigation.
           if '.cvLink{' not in s:
               css = '.cvLink{display:inline-block;border:1px solid #1c607d;border-radius:7px;background:#06202c;color:#bcefff;padding:8px 9px;font-size:8px;letter-spacing:.05em;text-decoration:none}.cvLink:hover{color:#fff;background:#08202d;border-color:#1c607d}'
               s = s.replace('</style>', css + '</style>', 1)
 
-          # Add an executive CV callout if it is missing.
           if 'TECHNOLOGY EXECUTIVE CV' not in s:
               marker = '<section id="contact" class="view">'
-              cv = '''<div class="panel" style="border-color:#1d6583;background:linear-gradient(135deg,#071d28,#031017);margin-top:10px"><div class="head"><div><h2>TECHNOLOGY EXECUTIVE CV</h2><small>TECHNOLOGY-ONLY PROFESSIONAL PROFILE</small></div><span class="live">● CURRENT</span></div><p class="lead">Systems architecture, AI, cybersecurity, machine learning, backend and data architecture, technology experience, education and technical certifications.</p><div class="actions"><a class="action primary" href="technology-cv.html">OPEN TECHNOLOGY CV ↗</a><a class="action" href="mailto:kandiemasasabi@gmail.com?subject=Kelvin%20Kandie%20Technology%20CV">CONTACT ↗</a></div></div>'''
+              cv = '''<div class="panel" style="border-color:#1d6583;background:linear-gradient(135deg,#071d28,#031017);margin-top:10px"><div class="head"><div><h2>TECHNOLOGY EXECUTIVE CV</h2><small>TECHNOLOGY-ONLY PROFESSIONAL PROFILE</small></div><span class="live">● CURRENT</span></div><p class="lead">Systems architecture, AI, cybersecurity, machine learning, backend and data architecture, web engineering, technical SEO, automation and modern deployment.</p><div class="actions"><a class="action primary" href="technology-cv.html">OPEN TECHNOLOGY CV ↗</a><a class="action" href="mailto:kandiemasasabi@gmail.com?subject=Kelvin%20Kandie%20Technology%20CV">CONTACT ↗</a></div></div>'''
               if marker in s:
                   s = s.replace(marker, cv + marker, 1)
 
-          # Add the final technology skill vocabulary to the executive portfolio.
-          if 'TECHNICAL CAPABILITIES' not in s:
+          if 'TECHNOLOGY PROFICIENCY MATRIX' not in s:
               marker = '<section id="contact" class="view">'
-              skills = '''<section class="panel" style="margin-top:10px"><div class="head"><div><h2>TECHNICAL CAPABILITIES</h2><small>ENGINEERING DISCIPLINES</small></div><span class="live">● CURRENT</span></div><div class="statusPoints" style="margin-top:12px"><span class="point"><i>●</i>Artificial Intelligence</span><span class="point"><i>●</i>Cybersecurity</span><span class="point"><i>●</i>Machine Learning</span><span class="point"><i>●</i>Systems Architecture</span><span class="point"><i>●</i>Backend &amp; Data Architecture</span><span class="point"><i>●</i>Data Analytics</span><span class="point"><i>●</i>Web Engineering</span><span class="point"><i>●</i>Technical SEO</span><span class="point"><i>●</i>Full-Stack Development</span><span class="point"><i>●</i>Infrastructure &amp; Systems</span></div></section>'''
+              matrix = '''<div class="panel" style="margin-top:10px"><div class="head"><div><h2>TECHNOLOGY PROFICIENCY MATRIX</h2><small>EXECUTIVE SELF-ASSESSMENT</small></div><span class="live">● CURRENT</span></div><div class="skillsMatrix"><div><b>Systems Architecture</b><span>EXPERT / CORE</span></div><div><b>Artificial Intelligence</b><span>ADVANCED / CORE</span></div><div><b>Cybersecurity</b><span>ADVANCED / CORE</span></div><div><b>Machine Learning</b><span>ADVANCED / CORE</span></div><div><b>Backend &amp; Data Architecture</b><span>ADVANCED / CORE</span></div><div><b>Full-Stack Development</b><span>ADVANCED</span></div><div><b>Web Engineering</b><span>ADVANCED</span></div><div><b>Technical SEO</b><span>PROFICIENT</span></div><div><b>Claude Code</b><span>ADVANCED · AI-ASSISTED ENGINEERING</span></div><div><b>Vercel</b><span>PROFICIENT · DEPLOYMENT</span></div><div><b>n8n</b><span>PROFICIENT · WORKFLOW AUTOMATION</span></div><div><b>GoHighLevel (GHL)</b><span>PROFICIENT · CRM &amp; AUTOMATION</span></div><div><b>API Automation &amp; Integration</b><span>ADVANCED</span></div><div><b>Infrastructure &amp; Systems</b><span>ADVANCED</span></div></div></div>'''
               if marker in s:
-                  s = s.replace(marker, skills + marker, 1)
+                  s = s.replace(marker, matrix + marker, 1)
+
+          if '.skillsMatrix{' not in s:
+              css = '.skillsMatrix{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:9px}.skillsMatrix>div{border:1px solid #153747;background:#041018;border-radius:7px;padding:9px}.skillsMatrix b{display:block;color:#d9f7ff;font-size:7px}.skillsMatrix span{display:block;color:#6fcaf1;font-size:5px;margin-top:3px;letter-spacing:.05em}@media(max-width:600px){.skillsMatrix{grid-template-columns:1fr}}'
+              s = s.replace('</style>', css + '</style>', 1)
 
           p.write_text(s, encoding='utf-8')
           PY
@@ -58,5 +58,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'feat: add web engineering and technical SEO capabilities'
+          git commit -m 'feat: add executive technology proficiency matrix'
           git push
