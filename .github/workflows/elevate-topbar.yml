@@ -13,20 +13,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Refine topbar and expose technology CV
+      - name: Expose technology CV in command center
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
+
           p = Path('index.html')
-          s = p.read_text()
-          s = s.replace('<button data-view="dossier">DOSSIER</button><button data-view="contact">CONTACT</button>', '<button data-view="dossier">DOSSIER</button><a class="cvLink" href="technology-cv.html">TECH CV ↗</a><button data-view="contact">CONTACT</button>', 1)
-          s = s.replace('<button data-view="dossier">EXECUTIVE DOSSIER<small>Founder profile</small></button><button data-view="contact">CONTACT<small>Direct channel</small></button>', '<button data-view="dossier">EXECUTIVE DOSSIER<small>Founder profile</small></button><a class="cvLink" href="technology-cv.html">TECHNOLOGY CV ↗<small>Technology-only executive CV</small></a><button data-view="contact">CONTACT<small>Direct channel</small></button>', 1)
-          s = s.replace('.nav button:hover,.nav button.active{color:#fff;background:#08202d;border-color:#1c607d}', '.nav button:hover,.nav button.active,.nav .cvLink:hover{color:#fff;background:#08202d;border-color:#1c607d}.nav .cvLink{display:inline-block;border:1px solid #1c607d;border-radius:7px;background:#06202c;color:#bcefff;padding:8px 9px;font-size:8px;letter-spacing:.05em;text-decoration:none}', 1)
-          marker = '</section><section id="contact" class="view">'
-          cv = '<div class="panel" style="border-color:#1d6583;background:linear-gradient(135deg,#071d28,#031017);margin-top:10px"><div class="head"><div><h2>TECHNOLOGY EXECUTIVE CV</h2><small>TECHNOLOGY-ONLY PROFESSIONAL PROFILE</small></div><span class="live">● CURRENT</span></div><p class="lead">A focused executive CV covering systems architecture, AI, cybersecurity, machine learning, backend and data architecture, technology experience, education and technical certifications.</p><div class="actions"><a class="action primary" href="technology-cv.html">OPEN TECHNOLOGY CV ↗</a><a class="action" href="mailto:kandiemasasabi@gmail.com?subject=Kelvin%20Kandie%20Technology%20CV">CONTACT ↗</a></div></div>'
-          if marker in s and 'TECHNOLOGY EXECUTIVE CV' not in s:
-              s = s.replace(marker, cv + marker, 1)
-          p.write_text(s)
+          s = p.read_text(encoding='utf-8')
+
+          # Add a visible, direct CV link to the main navigation exactly once.
+          if 'href="technology-cv.html"' not in s:
+              nav_link = '<a class="cvLink" href="technology-cv.html">TECH CV ↗</a>'
+              if '</nav>' in s:
+                  s = s.replace('</nav>', nav_link + '</nav>', 1)
+              else:
+                  # Fallback for the compact single-file command center.
+                  marker = '<div class="status">'
+                  if marker in s:
+                      s = s.replace(marker, nav_link + marker, 1)
+
+          # Ensure the CV link is visually consistent with the executive navigation.
+          if '.cvLink{' not in s:
+              css = '.cvLink{display:inline-block;border:1px solid #1c607d;border-radius:7px;background:#06202c;color:#bcefff;padding:8px 9px;font-size:8px;letter-spacing:.05em;text-decoration:none}.cvLink:hover{color:#fff;background:#08202d;border-color:#1c607d}'
+              s = s.replace('</style>', css + '</style>', 1)
+
+          # Add an executive CV callout to the Dossier view if the page has the view.
+          if 'TECHNOLOGY EXECUTIVE CV' not in s:
+              marker = '<section id="contact" class="view">'
+              cv = '''<div class="panel" style="border-color:#1d6583;background:linear-gradient(135deg,#071d28,#031017);margin-top:10px"><div class="head"><div><h2>TECHNOLOGY EXECUTIVE CV</h2><small>TECHNOLOGY-ONLY PROFESSIONAL PROFILE</small></div><span class="live">● CURRENT</span></div><p class="lead">Systems architecture, AI, cybersecurity, machine learning, backend and data architecture, technology experience, education and technical certifications.</p><div class="actions"><a class="action primary" href="technology-cv.html">OPEN TECHNOLOGY CV ↗</a><a class="action" href="mailto:kandiemasasabi@gmail.com?subject=Kelvin%20Kandie%20Technology%20CV">CONTACT ↗</a></div></div>'''
+              if marker in s:
+                  s = s.replace(marker, cv + marker, 1)
+
+          p.write_text(s, encoding='utf-8')
           PY
       - name: Commit refinement
         run: |
