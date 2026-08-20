@@ -13,11 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Expose technology CV in command center
+      - name: Expose technology CV and technical capabilities
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
@@ -28,7 +27,6 @@ jobs:
               if '</nav>' in s:
                   s = s.replace('</nav>', nav_link + '</nav>', 1)
               else:
-                  # Fallback for the compact single-file command center.
                   marker = '<div class="status">'
                   if marker in s:
                       s = s.replace(marker, nav_link + marker, 1)
@@ -38,12 +36,19 @@ jobs:
               css = '.cvLink{display:inline-block;border:1px solid #1c607d;border-radius:7px;background:#06202c;color:#bcefff;padding:8px 9px;font-size:8px;letter-spacing:.05em;text-decoration:none}.cvLink:hover{color:#fff;background:#08202d;border-color:#1c607d}'
               s = s.replace('</style>', css + '</style>', 1)
 
-          # Add an executive CV callout to the Dossier view if the page has the view.
+          # Add an executive CV callout if it is missing.
           if 'TECHNOLOGY EXECUTIVE CV' not in s:
               marker = '<section id="contact" class="view">'
               cv = '''<div class="panel" style="border-color:#1d6583;background:linear-gradient(135deg,#071d28,#031017);margin-top:10px"><div class="head"><div><h2>TECHNOLOGY EXECUTIVE CV</h2><small>TECHNOLOGY-ONLY PROFESSIONAL PROFILE</small></div><span class="live">● CURRENT</span></div><p class="lead">Systems architecture, AI, cybersecurity, machine learning, backend and data architecture, technology experience, education and technical certifications.</p><div class="actions"><a class="action primary" href="technology-cv.html">OPEN TECHNOLOGY CV ↗</a><a class="action" href="mailto:kandiemasasabi@gmail.com?subject=Kelvin%20Kandie%20Technology%20CV">CONTACT ↗</a></div></div>'''
               if marker in s:
                   s = s.replace(marker, cv + marker, 1)
+
+          # Add the final technology skill vocabulary to the executive portfolio.
+          if 'TECHNICAL CAPABILITIES' not in s:
+              marker = '<section id="contact" class="view">'
+              skills = '''<section class="panel" style="margin-top:10px"><div class="head"><div><h2>TECHNICAL CAPABILITIES</h2><small>ENGINEERING DISCIPLINES</small></div><span class="live">● CURRENT</span></div><div class="statusPoints" style="margin-top:12px"><span class="point"><i>●</i>Artificial Intelligence</span><span class="point"><i>●</i>Cybersecurity</span><span class="point"><i>●</i>Machine Learning</span><span class="point"><i>●</i>Systems Architecture</span><span class="point"><i>●</i>Backend &amp; Data Architecture</span><span class="point"><i>●</i>Data Analytics</span><span class="point"><i>●</i>Web Engineering</span><span class="point"><i>●</i>Technical SEO</span><span class="point"><i>●</i>Full-Stack Development</span><span class="point"><i>●</i>Infrastructure &amp; Systems</span></div></section>'''
+              if marker in s:
+                  s = s.replace(marker, skills + marker, 1)
 
           p.write_text(s, encoding='utf-8')
           PY
@@ -53,5 +58,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'feat: expose technology executive CV in command center'
+          git commit -m 'feat: add web engineering and technical SEO capabilities'
           git push
