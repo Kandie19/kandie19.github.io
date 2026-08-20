@@ -1,17 +1,95 @@
-/* Kelvin Kandie — Executive Command Center recovery + telemetry layer */
+/* Kelvin Kandie — Executive Command Center recovery + enterprise SEO layer */
 (function () {
   'use strict';
+
+  function addMeta(name, content, property) {
+    if (!content) return;
+    var selector = property ? 'meta[property="' + name + '"]' : 'meta[name="' + name + '"]';
+    var el = document.head.querySelector(selector);
+    if (!el) { el = document.createElement('meta'); if (property) el.setAttribute('property', name); else el.setAttribute('name', name); document.head.appendChild(el); }
+    el.setAttribute('content', content);
+  }
+
+  function installEnterpriseSEO() {
+    try {
+      document.documentElement.lang = 'en';
+      var canonical = document.head.querySelector('link[rel="canonical"]');
+      if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
+      canonical.href = 'https://kandie19.github.io/';
+
+      addMeta('description', 'Kelvin Kandie — Systems Architect, Founder and Builder of intelligent systems and AEGIS Security Platform.', false);
+      addMeta('robots', 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1', false);
+      addMeta('author', 'Kelvin Kandie', false);
+      addMeta('og:type', 'profile', true);
+      addMeta('og:title', 'Kelvin Kandie | Systems Architect · Founder · Builder', true);
+      addMeta('og:description', 'Executive technology command center for Kelvin Kandie — systems architecture, intelligent systems, security engineering and AEGIS.', true);
+      addMeta('og:url', 'https://kandie19.github.io/', true);
+      addMeta('og:site_name', 'Kelvin Kandie', true);
+      addMeta('og:image', 'https://kandie19.github.io/kelvin-kandie-portrait.jpg.jpg', true);
+      addMeta('og:image:alt', 'Kelvin Kandie — Systems Architect', true);
+      addMeta('twitter:card', 'summary_large_image', false);
+      addMeta('twitter:title', 'Kelvin Kandie | Systems Architect · Founder · Builder', false);
+      addMeta('twitter:description', 'Executive technology command center showcasing systems architecture, intelligent systems and AEGIS.', false);
+      addMeta('twitter:image', 'https://kandie19.github.io/kelvin-kandie-portrait.jpg.jpg', false);
+
+      if (!document.getElementById('kelvin-person-schema')) {
+        var script = document.createElement('script');
+        script.id = 'kelvin-person-schema'; script.type = 'application/ld+json';
+        script.textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'ProfilePage',
+              '@id': 'https://kandie19.github.io/#profile',
+              'url': 'https://kandie19.github.io/',
+              'name': 'Kelvin Kandie | Executive Technology Command Center',
+              'isPartOf': {'@id': 'https://kandie19.github.io/#website'},
+              'mainEntity': {'@id': 'https://kandie19.github.io/#person'}
+            },
+            {
+              '@type': 'Person',
+              '@id': 'https://kandie19.github.io/#person',
+              'name': 'Kelvin Kandie',
+              'alternateName': ['Kelvin Kieran Kandie', 'Kandie19'],
+              'url': 'https://kandie19.github.io/',
+              'image': 'https://kandie19.github.io/kelvin-kandie-portrait.jpg.jpg',
+              'jobTitle': 'Systems Architect',
+              'description': 'Systems Architect, Founder and Builder focused on intelligent systems, security engineering, AI and operational decision intelligence.',
+              'email': 'mailto:kandiemasasabi@gmail.com',
+              'address': {'@type':'PostalAddress','addressLocality':'Nairobi','addressCountry':'KE'},
+              'sameAs': [
+                'https://www.linkedin.com/in/kelvin-kandie',
+                'https://github.com/Kandie19'
+              ],
+              'knowsAbout': ['Systems Architecture','Artificial Intelligence','Machine Learning','Cybersecurity','Security Engineering','Computer Vision','Decision Intelligence','Autonomous Systems','Software Engineering']
+            },
+            {
+              '@type': 'WebSite',
+              '@id': 'https://kandie19.github.io/#website',
+              'url': 'https://kandie19.github.io/',
+              'name': 'Kelvin Kandie — Executive Technology Command Center',
+              'publisher': {'@id':'https://kandie19.github.io/#person'}
+            }
+          ]
+        });
+        document.head.appendChild(script);
+      }
+    } catch (_) {}
+  }
+
   function revealShell() {
     try {
       var boot = document.querySelector('.boot'), shell = document.querySelector('.shell');
       if (boot) { boot.style.display = 'none'; boot.setAttribute('aria-hidden', 'true'); }
       if (shell) { shell.style.display = 'block'; shell.style.visibility = 'visible'; shell.style.opacity = '1'; }
       var home = document.getElementById('home');
-      if (home) home.classList.add('active');
-      document.querySelectorAll('.view').forEach(function (v) { if (v.id !== 'home') v.classList.remove('active'); });
+      if (home && !document.querySelector('.view.active')) home.classList.add('active');
+      document.querySelectorAll('.view').forEach(function (v) { if (v.id !== 'home' && !v.classList.contains('active')) v.classList.remove('active'); });
     } catch (_) {}
   }
+
   function run() {
+    installEnterpriseSEO();
     revealShell();
     var API='https://api.github.com', USER='Kandie19';
     var PRIVATE=[
