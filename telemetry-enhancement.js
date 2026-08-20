@@ -11,7 +11,6 @@
     { name: 'AEGIS Intelligence Engine', description: 'Decision intelligence, threat assessment and autonomous security architecture.', private: true, language: 'Python', url: 'https://github.com/Kandie19', tags: ['AI', 'Security'] },
     { name: 'AEGIS Vision Systems', description: 'Computer vision and real-time perception architecture.', private: true, language: 'Python', url: 'https://github.com/Kandie19', tags: ['Computer Vision', 'AI'] }
   ];
-
   const PUBLIC_FALLBACK = [
     { name: 'Kandera Analytics', description: 'Intelligent systems and analytics engineering work.', private: false, language: 'Python', url: 'https://github.com/Kandie19', tags: ['Python', 'Analytics'] },
     { name: 'Smart Systems', description: 'Applied intelligent systems and automation engineering.', private: false, language: 'Python', url: 'https://github.com/Kandie19', tags: ['Automation'] },
@@ -20,12 +19,25 @@
   ];
 
   const $ = id => document.getElementById(id);
-  const set = (id, value) => {
-    const el = $(id);
-    if (el) el.textContent = String(value);
-  };
+  const set = (id, value) => { const el = $(id); if (el) el.textContent = String(value); };
 
-  function statusPoint(text) {
+  /* CRITICAL: this file is deliberately self-contained. If the large inline
+     application script fails, the command center must still leave boot mode. */
+  function revealShell() {
+    const boot = document.querySelector('.boot');
+    const shell = document.querySelector('.shell');
+    if (boot) {
+      boot.style.display = 'none';
+      boot.setAttribute('aria-hidden', 'true');
+    }
+    if (shell) {
+      shell.style.display = 'block';
+      shell.style.visibility = 'visible';
+      shell.style.opacity = '1';
+    }
+  }
+
+  function statusPoint() {
     const wrap = document.querySelector('.heroCopy');
     if (!wrap || wrap.querySelector('.executive-status-points')) return;
     const actions = wrap.querySelector('.actions');
@@ -43,7 +55,6 @@
   }
 
   function snapshot() {
-    /* Executive baseline: visible before any network request. */
     set('heroRepos', '7');
     set('heroCommits', '240+');
     set('railRepos', '7');
@@ -53,7 +64,6 @@
     set('ghCommitActivity', '240+');
     set('syncStatus', '● EXECUTIVE TELEMETRY');
     set('repoCount', '7 indexed · executive view');
-
     statusPoint();
 
     const activity = $('activityGrid');
@@ -131,9 +141,7 @@
         url: r.html_url,
         tags: r.language ? [r.language] : []
       }))];
-
       set('heroRepos', repositoryState.length);
-      set('heroCommits', 'LIVE');
       set('railRepos', repositoryState.length);
       set('railPublic', publicRepos.length);
       set('ghRepoTotal', repositoryState.length);
@@ -144,20 +152,14 @@
       const batches = await Promise.all(publicRepos.slice(0, 20).map(r =>
         json(`${API}/repos/${USER}/${encodeURIComponent(r.name)}/commits?per_page=15`).catch(() => [])
       ));
-      const commits = batches.flat().sort((a, b) =>
-        new Date(b.commit?.author?.date || 0) - new Date(a.commit?.author?.date || 0)
-      );
-
+      const commits = batches.flat().sort((a, b) => new Date(b.commit?.author?.date || 0) - new Date(a.commit?.author?.date || 0));
       if (commits.length) {
         set('ghCommitActivity', `${commits.length}+`);
         set('heroCommits', `${commits.length}+`);
         const recent = $('recentCommits');
-        if (recent) {
-          recent.innerHTML = commits.slice(0, 8).map(c => `<div class="commit"><i></i><div><b>${String(c.commit?.message || 'Engineering commit').split('\n')[0].slice(0, 70)}</b><small>${c.commit?.author?.name || 'GitHub'} · ${new Date(c.commit?.author?.date || Date.now()).toLocaleDateString()}</small></div></div>`).join('');
-        }
+        if (recent) recent.innerHTML = commits.slice(0, 8).map(c => `<div class="commit"><i></i><div><b>${String(c.commit?.message || 'Engineering commit').split('\n')[0].slice(0, 70)}</b><small>${c.commit?.author?.name || 'GitHub'} · ${new Date(c.commit?.author?.date || Date.now()).toLocaleDateString()}</small></div></div>`).join('');
       }
     } catch (error) {
-      /* Keep the executive snapshot. A failed network request must never blank the UI. */
       set('syncStatus', '● EXECUTIVE TELEMETRY');
       set('heroCommits', '240+');
       set('ghCommitActivity', '240+');
@@ -165,25 +167,14 @@
   }
 
   function boot() {
+    revealShell();
     snapshot();
-    repositoryState = [...PRIVATE, ...PUBLIC_FALLBACK];
     renderRepositories();
     wireSearch();
-    setTimeout(() => {
-      snapshot();
-      renderRepositories();
-      wireSearch();
-      liveEnhancement();
-    }, 250);
-    setInterval(() => {
-      statusPoint();
-      wireSearch();
-    }, 3000);
+    setTimeout(() => { revealShell(); snapshot(); renderRepositories(); wireSearch(); liveEnhancement(); }, 250);
+    setInterval(() => { revealShell(); statusPoint(); wireSearch(); }, 3000);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot, { once: true });
-  } else {
-    boot();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  else boot();
 })();
