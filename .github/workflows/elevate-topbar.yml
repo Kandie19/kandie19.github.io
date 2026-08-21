@@ -13,43 +13,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Expose technology CV and executive proficiency matrix
+      - name: Expose technology CV and executive architecture profile
         run: |
           python3 - <<'PY'
           from pathlib import Path
-
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-
           if 'href="technology-cv.html"' not in s:
               nav_link = '<a class="cvLink" href="technology-cv.html">TECH CV ↗</a>'
-              if '</nav>' in s:
-                  s = s.replace('</nav>', nav_link + '</nav>', 1)
-              else:
-                  marker = '<div class="status">'
-                  if marker in s:
-                      s = s.replace(marker, nav_link + marker, 1)
-
+              if '</nav>' in s: s = s.replace('</nav>', nav_link + '</nav>', 1)
           if '.cvLink{' not in s:
               css = '.cvLink{display:inline-block;border:1px solid #1c607d;border-radius:7px;background:#06202c;color:#bcefff;padding:8px 9px;font-size:8px;letter-spacing:.05em;text-decoration:none}.cvLink:hover{color:#fff;background:#08202d;border-color:#1c607d}'
               s = s.replace('</style>', css + '</style>', 1)
-
-          if 'TECHNOLOGY EXECUTIVE CV' not in s:
-              marker = '<section id="contact" class="view">'
+          marker = '<section id="contact" class="view">'
+          if 'TECHNOLOGY EXECUTIVE CV' not in s and marker in s:
               cv = '''<div class="panel" style="border-color:#1d6583;background:linear-gradient(135deg,#071d28,#031017);margin-top:10px"><div class="head"><div><h2>TECHNOLOGY EXECUTIVE CV</h2><small>TECHNOLOGY-ONLY PROFESSIONAL PROFILE</small></div><span class="live">● CURRENT</span></div><p class="lead">Systems architecture, AI, cybersecurity, machine learning, backend and data architecture, web engineering, technical SEO, automation and modern deployment.</p><div class="actions"><a class="action primary" href="technology-cv.html">OPEN TECHNOLOGY CV ↗</a><a class="action" href="mailto:kandiemasasabi@gmail.com?subject=Kelvin%20Kandie%20Technology%20CV">CONTACT ↗</a></div></div>'''
-              if marker in s:
-                  s = s.replace(marker, cv + marker, 1)
-
-          if 'TECHNOLOGY PROFICIENCY MATRIX' not in s:
-              marker = '<section id="contact" class="view">'
+              s = s.replace(marker, cv + marker, 1)
+          if 'TECHNOLOGY PROFICIENCY MATRIX' not in s and marker in s:
               matrix = '''<div class="panel" style="margin-top:10px"><div class="head"><div><h2>TECHNOLOGY PROFICIENCY MATRIX</h2><small>EXECUTIVE SELF-ASSESSMENT</small></div><span class="live">● CURRENT</span></div><div class="skillsMatrix"><div><b>Systems Architecture</b><span>EXPERT / CORE</span></div><div><b>Artificial Intelligence</b><span>ADVANCED / CORE</span></div><div><b>Cybersecurity</b><span>ADVANCED / CORE</span></div><div><b>Machine Learning</b><span>ADVANCED / CORE</span></div><div><b>Backend &amp; Data Architecture</b><span>ADVANCED / CORE</span></div><div><b>Full-Stack Development</b><span>ADVANCED</span></div><div><b>Web Engineering</b><span>ADVANCED</span></div><div><b>Technical SEO</b><span>PROFICIENT</span></div><div><b>Claude Code</b><span>ADVANCED · AI-ASSISTED ENGINEERING</span></div><div><b>Vercel</b><span>PROFICIENT · DEPLOYMENT</span></div><div><b>n8n</b><span>PROFICIENT · WORKFLOW AUTOMATION</span></div><div><b>GoHighLevel (GHL)</b><span>PROFICIENT · CRM &amp; AUTOMATION</span></div><div><b>API Automation &amp; Integration</b><span>ADVANCED</span></div><div><b>Infrastructure &amp; Systems</b><span>ADVANCED</span></div></div></div>'''
-              if marker in s:
-                  s = s.replace(marker, matrix + marker, 1)
-
+              s = s.replace(marker, matrix + marker, 1)
+          if 'ARCHITECTURE TECHNOLOGY CONSTELLATION' not in s and marker in s:
+              constellation = '''<div class="panel" style="margin-top:10px"><div class="head"><div><h2>ARCHITECTURE TECHNOLOGY CONSTELLATION</h2><small>SYSTEMS ARCHITECTURE · FULL-STACK TECHNOLOGY COVERAGE</small></div><span class="live">● ARCHITECTURE MAP</span></div><p class="lead">A systems-level view of the technologies and disciplines used across architecture, application engineering, data, intelligence, security, infrastructure, delivery and automation.</p><div class="constellationPlus"><div class="corePlus">SYSTEMS<br>ARCHITECTURE</div><div class="techPlus p1">Cloud Architecture</div><div class="techPlus p2">API Architecture</div><div class="techPlus p3">Distributed Systems</div><div class="techPlus p4">Microservices</div><div class="techPlus p5">Database Architecture</div><div class="techPlus p6">Data Engineering</div><div class="techPlus p7">Event-Driven Architecture</div><div class="techPlus p8">Observability &amp; Telemetry</div><div class="techPlus p9">DevOps &amp; CI/CD</div><div class="techPlus p10">Infrastructure as Code</div><div class="techPlus p11">Containerization</div><div class="techPlus p12">Networking</div><div class="techPlus p13">Identity &amp; Access Management</div><div class="techPlus p14">Application Security</div><div class="techPlus p15">AI Engineering</div><div class="techPlus p16">MLOps</div><div class="techPlus p17">Automation Engineering</div><div class="techPlus p18">Systems Integration</div></div></div>'''
+              s = s.replace(marker, constellation + marker, 1)
           if '.skillsMatrix{' not in s:
               css = '.skillsMatrix{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:9px}.skillsMatrix>div{border:1px solid #153747;background:#041018;border-radius:7px;padding:9px}.skillsMatrix b{display:block;color:#d9f7ff;font-size:7px}.skillsMatrix span{display:block;color:#6fcaf1;font-size:5px;margin-top:3px;letter-spacing:.05em}@media(max-width:600px){.skillsMatrix{grid-template-columns:1fr}}'
               s = s.replace('</style>', css + '</style>', 1)
-
+          if '.constellationPlus{' not in s:
+              css = '.constellationPlus{position:relative;min-height:520px;border:1px solid #153747;border-radius:8px;background:radial-gradient(circle at 50% 50%,#0a3a50 0,transparent 24%),radial-gradient(circle at 20% 20%,#082331,transparent 30%),#030b11;overflow:hidden;margin-top:10px}.corePlus{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:138px;height:138px;border:1px solid var(--c);border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:800;font-size:9px;line-height:1.4;color:#eaf7fb;box-shadow:0 0 45px #18c9ff2e,0 0 0 18px #18c9ff08}.techPlus{position:absolute;border:1px solid #1b566e;background:#061722e8;border-radius:99px;padding:7px 10px;font-size:7px;color:#a9ddea;box-shadow:0 8px 25px #0005;white-space:nowrap}.p1{left:4%;top:7%}.p2{left:29%;top:4%}.p3{right:5%;top:8%}.p4{left:3%;top:29%}.p5{left:26%;top:24%}.p6{right:24%;top:22%}.p7{right:4%;top:30%}.p8{left:7%;top:52%}.p9{right:7%;top:51%}.p10{left:3%;bottom:26%}.p11{left:28%;bottom:19%}.p12{right:26%;bottom:19%}.p13{right:3%;bottom:27%}.p14{left:10%;bottom:7%}.p15{left:35%;bottom:5%}.p16{right:33%;bottom:5%}.p17{right:7%;bottom:8%}.p18{left:43%;top:19%}@media(max-width:700px){.constellationPlus{min-height:720px}.techPlus{font-size:6px;padding:6px 8px}.p1{left:3%;top:4%}.p2{left:31%;top:2%}.p3{right:3%;top:5%}.p4{left:2%;top:17%}.p5{left:27%;top:16%}.p6{right:24%;top:17%}.p7{right:2%;top:22%}.p8{left:3%;top:31%}.p9{right:3%;top:34%}.p10{left:2%;top:44%}.p11{left:27%;top:45%}.p12{right:25%;top:45%}.p13{right:2%;top:49%}.p14{left:3%;bottom:12%}.p15{left:30%;bottom:7%}.p16{right:29%;bottom:7%}.p17{right:3%;bottom:12%}.p18{left:37%;top:29%}}'
+              s = s.replace('</style>', css + '</style>', 1)
           p.write_text(s, encoding='utf-8')
           PY
       - name: Commit refinement
@@ -58,5 +49,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'feat: add executive technology proficiency matrix'
+          git commit -m 'feat: finalize executive technology constellation'
           git push
