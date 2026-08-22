@@ -1,0 +1,56 @@
+name: Integrate IP-Safe Evidence Layer
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'aegis-engineering-lab.js'
+      - 'AEGIS-ENGINEERING-EVIDENCE.md'
+      - 'AEGIS-ENGINEERING-TIMELINE.md'
+      - 'FOUNDER-OPERATING-PHILOSOPHY.md'
+      - 'EXECUTIVE-TECHNOLOGY-DOSSIER.md'
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Safely activate the public AEGIS lab
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          tag = '<script src="aegis-engineering-lab.js" defer></script>'
+          if tag not in s:
+              if '</body>' in s:
+                  s = s.replace('</body>', tag + '</body>', 1)
+              else:
+                  s += tag
+              p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Verify integration without exposing IP
+        run: |
+          grep -q 'aegis-engineering-lab.js' index.html
+          test -s aegis-engineering-lab.js
+          test -s AEGIS-ENGINEERING-EVIDENCE.md
+          test -s AEGIS-ENGINEERING-TIMELINE.md
+          test -s FOUNDER-OPERATING-PHILOSOPHY.md
+          test -s EXECUTIVE-TECHNOLOGY-DOSSIER.md
+
+      - name: Commit only the safe integration change
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'Evidence layer already integrated.'
+          else
+            git commit -m 'feat: integrate IP-safe AEGIS evidence lab'
+            git push
+          fi
