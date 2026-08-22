@@ -1,6 +1,7 @@
 /* AEGIS Engineering Lab — public, IP-safe demonstration layer.
    Demonstrates decision reasoning with synthetic inputs only.
    No proprietary implementation, models, thresholds, data, credentials, or source code are exposed.
+   Integration checkpoint: evidence layer activation verified through repository workflow.
 */
 (function(){
   'use strict';
@@ -28,10 +29,9 @@
       const id=+document.getElementById('idSlider').value, beh=+document.getElementById('behSlider').value, risk=+document.getElementById('riskSlider').value, pol=+document.getElementById('polSlider').value;
       fields.forEach(([s,v])=>document.getElementById(v).textContent=document.getElementById(s).value);
       const score=(beh*.35)+(risk*.35)+(pol*.2)+((100-id)*.1);
-      let decision='MONITOR', cls='#f2b84b';
-      if(score>=70){decision='ESCALATE FOR REVIEW';cls='#ff5262'} else if(score>=45){decision='REVIEW';cls='#f2b84b'} else {decision='LOW-RISK / CONTINUE MONITORING';cls='#39e58a'}
+      let decision='MONITOR';
+      if(score>=70) decision='ESCALATE FOR REVIEW'; else if(score>=45) decision='REVIEW'; else decision='LOW-RISK / CONTINUE MONITORING';
       document.getElementById('aegisDecision').textContent='Recommendation: '+decision;
-      document.getElementById('aegisDecision').style.borderLeftColor=cls;
       document.getElementById('aegisReason').textContent='Simulated reasoning: identity confidence '+id+'%; behavioral anomaly '+beh+'%; historical risk '+risk+'%; policy sensitivity '+pol+'%. Combined context score '+Math.round(score)+'%. This is an illustrative decision pathway, not the proprietary AEGIS engine.';
     }
     fields.forEach(([s])=>document.getElementById(s).addEventListener('input',update));
