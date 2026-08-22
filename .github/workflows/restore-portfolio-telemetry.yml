@@ -1,4 +1,4 @@
-name: Restore Portfolio Telemetry Safely
+name: Freeze Portfolio Telemetry Baseline
 
 on:
   workflow_dispatch:
@@ -10,18 +10,19 @@ permissions:
   contents: write
 
 jobs:
-  restore:
+  freeze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore visible executive fallbacks and AEGIS pulse
+      - name: Preserve executive baseline and freeze telemetry mutations
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
+          # Preserve the executive-facing baseline even when GitHub API data is unavailable.
           replacements = {
               'id="railRepos">—': 'id="railRepos">18',
               'id="railPublic">—': 'id="railPublic">15',
@@ -35,6 +36,16 @@ jobs:
           for old, new in replacements.items():
               s = s.replace(old, new)
 
+          # The portfolio is now frozen. GitHub API synchronization must never blank,
+          # fluctuate, or overwrite the executive baseline. The existing telemetry
+          # implementation remains in the source for future controlled reactivation,
+          # but this return makes the frozen presentation deterministic.
+          marker = 'async function telemetry(){'
+          freeze = "function telemetry(){set('syncStatus','● EXECUTIVE BASELINE · FROZEN');renderRepos();renderActivity();renderCommits();renderFeed();return;"
+          if marker in s and freeze not in s:
+              s = s.replace(marker, freeze, 1)
+
+          # Ensure the complete AEGIS architectural pulse is present.
           old_pulse = '''<div class="panel"><div class="head"><h2>AEGIS DEVELOPMENT PULSE</h2><small>PRIVATE SYSTEM</small></div><div class="terminal"><div class="green">[LIVE] AEGIS INTELLIGENCE CORE</div><div>[SYS] visibility ........ PRIVATE</div><div>[SYS] source telemetry .. PROTECTED</div><div>[SYS] architecture ..... PUBLIC BRIEF</div><div>[SYS] decision fabric ... ONLINE</div><div style="color:var(--a)">[INFO] no proprietary source exposed</div></div></div>'''
           new_pulse = '''<div class="panel"><div class="head"><div><h2>AEGIS DEVELOPMENT PULSE</h2><small>ARCHITECTURAL DEVELOPMENT STATUS · PROPRIETARY SYSTEMS PROTECTED</small></div><span class="live">● BUILDING</span></div><div class="terminal"><div class="green">[AEGIS] INTELLIGENCE CORE ........ ONLINE</div><div>[AEGIS] PERCEPTION FABRIC ........ ACTIVE</div><div>[AEGIS] IDENTITY INTELLIGENCE .... ACTIVE</div><div>[AEGIS] BEHAVIOR INTELLIGENCE .... ACTIVE</div><div>[AEGIS] THREAT INTELLIGENCE ...... ACTIVE</div><div>[AEGIS] DECISION INTELLIGENCE .... ACTIVE</div><div>[AEGIS] AUTONOMOUS SOC ........... BUILDING</div><div>[AEGIS] RESPONSE ORCHESTRATION ... BUILDING</div><div>[AEGIS] GOVERNANCE / AUDIT ....... ACTIVE</div><div>[AEGIS] SOURCE VISIBILITY ........ PROTECTED</div><div style="color:var(--a)">[INFO] development status is summarized at the architectural level; proprietary implementation remains private.</div></div></div>'''
           if old_pulse in s:
@@ -43,11 +54,11 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit restoration
+      - name: Commit freeze
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'fix: restore executive telemetry fallbacks and AEGIS pulse'
+          git commit -m 'chore: freeze portfolio telemetry and AEGIS presentation'
           git push
