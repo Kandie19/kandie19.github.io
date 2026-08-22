@@ -1,0 +1,89 @@
+name: Fix GitHub Telemetry
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-github-telemetry.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch telemetry implementation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Start with neutral values; live GitHub telemetry replaces them after synchronization.
+          replacements = {
+              'id="railRepos">18': 'id="railRepos">—',
+              'id="railPublic">15': 'id="railPublic">—',
+              'id="railCommits">100+': 'id="railCommits">—',
+              'id="heroRepos">18': 'id="heroRepos">—',
+              'id="heroCommits">100+': 'id="heroCommits">—',
+              'id="repoTotal">18': 'id="repoTotal">—',
+              'id="publicTotal">15': 'id="publicTotal">—',
+              'id="commitTotal">100+': 'id="commitTotal">—',
+              'id="repoCount" class="repoCount">18 indexed': 'id="repoCount" class="repoCount">Synchronizing…',
+          }
+          for old, new in replacements.items():
+              s = s.replace(old, new)
+
+          old = '''async function telemetry(){try{const r=await fetch(`${API}/users/${USER}/repos?per_page=100&sort=updated`,{headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw Error();const data=(await r.json()).filter(x=>x.name!=='kandie19.github.io');repos=[...PRIVATE,...data.map(x=>({name:x.name,description:x.description||'Public engineering repository by Kelvin Kandie.',private:false,language:x.language||'Engineering',url:x.html_url,tags:x.language?[x.language]:[]}))];set('repoTotal',repos.length);set('publicTotal',data.length);set('heroRepos',repos.length);set('railRepos',repos.length);set('railPublic',data.length);set('syncStatus','● GITHUB SYNCHRONIZED');renderRepos();const batches=await Promise.all(data.slice(0,12).map(x=>fetch(`${API}/repos/${USER}/${encodeURIComponent(x.name)}/commits?per_page=15`).then(z=>z.ok?z.json():[]).catch(()=>[])));commits=batches.flat().sort((a,b)=>new Date(b.commit?.author?.date||0)-new Date(a.commit?.author?.date||0));set('commitTotal',commits.length+'+');set('heroCommits',commits.length+'+');set('railCommits',commits.length+'+');renderCommits();renderActivity()}catch(e){set('syncStatus','● EXECUTIVE BASELINE')}}'''
+
+          new = '''async function telemetry(){
+            try{
+              const r=await fetch(`${API}/users/${USER}/repos?per_page=100&sort=updated`,{headers:{Accept:'application/vnd.github+json'}});
+              if(!r.ok)throw Error();
+              const data=(await r.json()).filter(x=>x.name!=='kandie19.github.io');
+              repos=[...PRIVATE,...data.map(x=>({name:x.name,description:x.description||'Public engineering repository by Kelvin Kandie.',private:false,language:x.language||'Engineering',url:x.html_url,tags:x.language?[x.language]:[]}))];
+              set('repoTotal',repos.length);set('publicTotal',data.length);set('heroRepos',repos.length);set('railRepos',repos.length);set('railPublic',data.length);set('syncStatus','● GITHUB SYNCHRONIZED');
+              renderRepos();
+
+              // Count the complete public commit history for every public repository.
+              // The previous implementation sampled only 12 repositories × 15 commits,
+              // which made the displayed total fluctuate and capped it artificially.
+              const counts=await Promise.all(data.map(async x=>{
+                try{
+                  const z=await fetch(`${API}/repos/${USER}/${encodeURIComponent(x.name)}/commits?per_page=1`,{headers:{Accept:'application/vnd.github+json'}});
+                  if(!z.ok)return 0;
+                  const link=z.headers.get('Link')||'';
+                  const m=link.match(/[?&]page=(\\d+)>; rel="last"/);
+                  return m?Number(m[1]):1;
+                }catch(_){return 0;}
+              }));
+              const total=counts.reduce((a,b)=>a+b,0);
+              set('commitTotal',total>0?total+'+':'0');set('heroCommits',total>0?total+'+':'0');set('railCommits',total>0?total+'+':'0');
+
+              // Recent commits are a feed, not the total. Keep it intentionally separate.
+              const recent=await Promise.all(data.slice(0,10).map(x=>fetch(`${API}/repos/${USER}/${encodeURIComponent(x.name)}/commits?per_page=5`,{headers:{Accept:'application/vnd.github+json'}}).then(z=>z.ok?z.json():[]).catch(()=>[])));
+              commits=recent.flat().sort((a,b)=>new Date(b.commit?.author?.date||0)-new Date(a.commit?.author?.date||0));
+              renderCommits();renderActivity();
+            }catch(e){
+              set('syncStatus','● GITHUB TELEMETRY UNAVAILABLE');
+            }
+          }'''
+
+          if old not in s:
+              raise SystemExit('Expected telemetry function was not found; refusing to modify index.html')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Commit telemetry correction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'fix: make GitHub telemetry authoritative'
+          git push
