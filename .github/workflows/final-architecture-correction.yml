@@ -1,0 +1,38 @@
+name: Final Architecture Correction
+
+on:
+  push:
+    paths:
+      - '.github/workflows/final-architecture-correction.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add comprehensive engineering architecture
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<section id="contact" class="view">'
+          if 'KELVIN ARCHITECTURE · COMPLETE ENGINEERING STACK' not in s and marker in s:
+              panel = '''<div class="panel" style="margin-top:10px"><div class="head"><div><h2>KELVIN ARCHITECTURE · COMPLETE ENGINEERING STACK</h2><small>SYSTEMS ARCHITECTURE · FRONTEND · BACKEND · DATA · AI · SECURITY · INFRASTRUCTURE</small></div><span class="live">● ARCHITECTURE PROFILE</span></div><p class="lead">A comprehensive view of the engineering technologies and disciplines across the stack — from frontend interfaces and backend services to SQL, databases, AI, cybersecurity, cloud, infrastructure and automation.</p><div class="stackGrid"><div><b>CORE ARCHITECTURE</b><span>Systems Architecture · Distributed Systems · Microservices · Event-Driven Architecture · Systems Integration · API Architecture</span></div><div><b>BACKEND ENGINEERING</b><span>Python · FastAPI · Django · Flask · Node.js · Express.js · REST APIs · WebSockets · Pydantic · SQLAlchemy · JWT · OAuth</span></div><div><b>FRONTEND ENGINEERING</b><span>JavaScript · TypeScript · React · Next.js · HTML5 · CSS3 · Tailwind CSS · React Router · Axios · Chart.js · Recharts · Framer Motion</span></div><div><b>SQL &amp; DATABASE ARCHITECTURE</b><span>SQL · PostgreSQL · SQLite · MySQL · Relational Data Modeling · Database Design · ORM Architecture · Alembic · Redis</span></div><div><b>AI &amp; MACHINE LEARNING</b><span>Artificial Intelligence · Machine Learning · Computer Vision · Deep Learning · YOLO · InsightFace · Embeddings · Object Detection · Multi-Object Tracking · MLOps · AI Agents · Decision Intelligence</span></div><div><b>CYBERSECURITY</b><span>Application Security · Identity &amp; Access Management · RBAC · Threat Intelligence · SOC Architecture · SOAR · Incident Response · Security Intelligence</span></div><div><b>CLOUD &amp; INFRASTRUCTURE</b><span>AWS · Google Cloud · Microsoft Azure · Vercel · Docker · Kubernetes · Linux · Networking · CI/CD · Infrastructure as Code · Observability</span></div><div><b>AUTOMATION &amp; INTEGRATION</b><span>n8n · GoHighLevel (GHL) · API Automation · Webhooks · MQTT · Workflow Automation · Systems Integration</span></div><div><b>ENGINEERING TOOLCHAIN</b><span>Git · GitHub · GitHub Actions · Claude Code · VS Code · Postman · Swagger / OpenAPI</span></div><div><b>WEB ENGINEERING &amp; SEO</b><span>Technical SEO · Web Engineering · Performance Optimization · Structured Data · Search Architecture · Deployment Architecture</span></div></div></div>'''
+              s = s.replace(marker, panel + marker, 1)
+          css = '''<style>.stackGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:12px}.stackGrid>div{border:1px solid #153747;background:#041018;border-radius:7px;padding:11px;min-height:76px}.stackGrid b{display:block;color:#d9f7ff;font-size:7px;letter-spacing:.08em;margin-bottom:5px}.stackGrid span{display:block;color:#78909b;font-size:7px;line-height:1.65}@media(max-width:700px){.stackGrid{grid-template-columns:1fr}}</style>'''
+          if '.stackGrid{' not in s:
+              s = s.replace('</style>', css + '</style>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit and push final correction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'feat: add complete frontend backend SQL and engineering stack'
+          git push
