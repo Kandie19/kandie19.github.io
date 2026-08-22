@@ -1,0 +1,41 @@
+name: Finalize AEGIS Development Pulse
+
+on:
+  push:
+    paths:
+      - '.github/workflows/final-aegis-pulse.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update AEGIS development pulse
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old = '''<div class="panel"><div class="head"><h2>AEGIS DEVELOPMENT PULSE</h2><small>PRIVATE SYSTEM</small></div><div class="terminal"><div class="green">[LIVE] AEGIS INTELLIGENCE CORE</div><div>[SYS] visibility ........ PRIVATE</div><div>[SYS] source telemetry .. PROTECTED</div><div>[SYS] architecture ..... PUBLIC BRIEF</div><div>[SYS] decision fabric ... ONLINE</div><div style="color:var(--a)">[INFO] no proprietary source exposed</div></div></div>'''
+
+          new = '''<div class="panel"><div class="head"><div><h2>AEGIS DEVELOPMENT PULSE</h2><small>ARCHITECTURAL DEVELOPMENT STATUS · PROPRIETARY SYSTEMS PROTECTED</small></div><span class="live">● BUILDING</span></div><div class="terminal"><div class="green">[AEGIS] INTELLIGENCE CORE ........ ONLINE</div><div>[AEGIS] PERCEPTION FABRIC ........ ACTIVE</div><div>[AEGIS] IDENTITY INTELLIGENCE .... ACTIVE</div><div>[AEGIS] BEHAVIOR INTELLIGENCE .... ACTIVE</div><div>[AEGIS] THREAT INTELLIGENCE ...... ACTIVE</div><div>[AEGIS] DECISION INTELLIGENCE .... ACTIVE</div><div>[AEGIS] AUTONOMOUS SOC ........... BUILDING</div><div>[AEGIS] RESPONSE ORCHESTRATION ... BUILDING</div><div>[AEGIS] GOVERNANCE / AUDIT ....... ACTIVE</div><div>[AEGIS] SOURCE VISIBILITY ........ PROTECTED</div><div style="color:var(--a)">[INFO] development status is summarized at the architectural level; proprietary implementation remains private.</div></div></div>'''
+
+          if old not in s:
+              raise SystemExit('Expected AEGIS pulse block was not found; refusing to modify index.html')
+          s = s.replace(old, new, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit finalized pulse
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'feat: make AEGIS development pulse architectural and truthful'
+          git push
