@@ -2,53 +2,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   const icon=s=>`https://cdn.simpleicons.org/${s}/FFFFFF`;
   const main=document.querySelector('.main');
   if(!main)return;
-
-  // Upgrade semantic structure without replacing the existing portfolio content.
   document.querySelectorAll('img').forEach(img=>{if(!img.hasAttribute('loading')&&!img.classList.contains('portrait'))img.loading='lazy';if(!img.hasAttribute('decoding'))img.decoding='async'});
-
-  // Engineering Lab: public, conceptual AEGIS demonstration with no proprietary implementation.
   if(!document.getElementById('engineering-lab')){
-    const lab=document.createElement('section');
-    lab.id='engineering-lab'; lab.className='panel lab-panel';
-    lab.setAttribute('aria-labelledby','lab-title');
-    lab.innerHTML=`<div class="panel-head"><div><div class="panel-title">AEGIS ENGINEERING LAB</div><div class="panel-sub">Public systems demonstration · conceptual intelligence flow · no proprietary implementation exposed.</div></div><a href="#aegis">BACK TO AEGIS</a></div>
-      <div class="lab-grid">
-        <div class="lab-controls">
-          <div class="lab-kicker">SIMULATED SECURITY EVENT</div><div id="lab-title" class="lab-title">Test the intelligence flow.</div>
-          <p class="lab-copy">Select a scenario and run it through a high-level AEGIS decision path. This demonstration explains the product philosophy without exposing source code, models, internal services, credentials, or proprietary architecture.</p>
-          <div class="lab-select" role="group" aria-label="Engineering Lab scenarios">
-            <button class="lab-scenario active" data-scenario="perimeter">PERIMETER SIGNAL</button><button class="lab-scenario" data-scenario="identity">IDENTITY EVENT</button><button class="lab-scenario" data-scenario="anomaly">SYSTEM ANOMALY</button><button class="lab-scenario" data-scenario="crowd">CROWD BEHAVIOUR</button>
-          </div><button class="lab-run" type="button">RUN SIMULATION</button><div class="lab-status" aria-live="polite">STATUS: <b>READY</b></div>
-        </div>
-        <div><div class="lab-pipeline" aria-label="AEGIS conceptual pipeline">
-          <div class="lab-stage" data-stage="0"><span class="num">01 / SIGNAL</span><strong>OBSERVE</strong><small>Receive a security event or observable signal.</small></div>
-          <div class="lab-stage" data-stage="1"><span class="num">02 / CONTEXT</span><strong>ESTABLISH</strong><small>Build situational context from available evidence.</small></div>
-          <div class="lab-stage" data-stage="2"><span class="num">03 / RISK</span><strong>ASSESS</strong><small>Determine significance and potential threat.</small></div>
-          <div class="lab-stage" data-stage="3"><span class="num">04 / DECISION</span><strong>RECOMMEND</strong><small>Produce an informed response direction.</small></div>
-          <div class="lab-stage" data-stage="4"><span class="num">05 / RESPONSE</span><strong>ACT</strong><small>Support controlled action with human accountability.</small></div>
-        </div></div></div>`;
-    const repo=document.getElementById('repository-evidence');
-    (repo||document.querySelector('.tech-strip'))?.insertAdjacentElement('afterend',lab);
-    const scenarios={perimeter:'Perimeter signal received',identity:'Identity event received',anomaly:'System anomaly observed',crowd:'Crowd behaviour signal received'};
-    let selected='perimeter';
+    const lab=document.createElement('section');lab.id='engineering-lab';lab.className='panel lab-panel';lab.setAttribute('aria-labelledby','lab-title');
+    lab.innerHTML=`<div class="panel-head"><div><div class="panel-title">AEGIS ENGINEERING LAB</div><div class="panel-sub">Public systems demonstration · conceptual intelligence flow · no proprietary implementation exposed.</div></div><a href="#aegis">BACK TO AEGIS</a></div><div class="lab-grid"><div class="lab-controls"><div class="lab-kicker">SIMULATED SECURITY EVENT</div><div id="lab-title" class="lab-title">Test the intelligence flow.</div><p class="lab-copy">Select a scenario and run it through a high-level AEGIS decision path. This demonstration explains the product philosophy without exposing source code, models, internal services, credentials, or proprietary architecture.</p><div class="lab-select" role="group" aria-label="Engineering Lab scenarios"><button class="lab-scenario active" data-scenario="perimeter">PERIMETER SIGNAL</button><button class="lab-scenario" data-scenario="identity">IDENTITY EVENT</button><button class="lab-scenario" data-scenario="anomaly">SYSTEM ANOMALY</button><button class="lab-scenario" data-scenario="crowd">CROWD BEHAVIOUR</button></div><button class="lab-run" type="button">RUN SIMULATION</button><div class="lab-status" aria-live="polite">STATUS: <b>READY</b></div></div><div><div class="lab-pipeline" aria-label="AEGIS conceptual pipeline"><div class="lab-stage" data-stage="0"><span class="num">01 / SIGNAL</span><strong>OBSERVE</strong><small>Receive a security event or observable signal.</small></div><div class="lab-stage" data-stage="1"><span class="num">02 / CONTEXT</span><strong>ESTABLISH</strong><small>Build situational context from available evidence.</small></div><div class="lab-stage" data-stage="2"><span class="num">03 / RISK</span><strong>ASSESS</strong><small>Determine significance and potential threat.</small></div><div class="lab-stage" data-stage="3"><span class="num">04 / DECISION</span><strong>RECOMMEND</strong><small>Produce an informed response direction.</small></div><div class="lab-stage" data-stage="4"><span class="num">05 / RESPONSE</span><strong>ACT</strong><small>Support controlled action with human accountability.</small></div></div></div></div>`;
+    const repo=document.getElementById('repository-evidence');(repo||document.querySelector('.tech-strip'))?.insertAdjacentElement('afterend',lab);
+    const scenarios={perimeter:'Perimeter signal received',identity:'Identity event received',anomaly:'System anomaly observed',crowd:'Crowd behaviour signal received'};let selected='perimeter';
     lab.querySelectorAll('.lab-scenario').forEach(btn=>btn.addEventListener('click',()=>{lab.querySelectorAll('.lab-scenario').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selected=btn.dataset.scenario;lab.querySelector('.lab-status').innerHTML='STATUS: <b>READY</b> · '+scenarios[selected]}));
-    const run=lab.querySelector('.lab-run');
-    run.addEventListener('click',()=>{
-      const stages=[...lab.querySelectorAll('.lab-stage')]; stages.forEach(s=>s.classList.remove('active')); run.disabled=true; run.textContent='PROCESSING…';
-      let i=0; const tick=()=>{if(i<stages.length){stages[i].classList.add('active');lab.querySelector('.lab-status').innerHTML=`STATUS: <b>STAGE ${i+1}/5</b> · ${scenarios[selected]}`;i++;setTimeout(tick,380)}else{run.disabled=false;run.textContent='RUN SIMULATION';lab.querySelector('.lab-status').innerHTML='STATUS: <b>COMPLETE</b> · CONTROLLED RESPONSE RECOMMENDED'}}; tick();
-    });
+    lab.querySelector('.lab-run').addEventListener('click',()=>{const stages=[...lab.querySelectorAll('.lab-stage')],run=lab.querySelector('.lab-run');stages.forEach(s=>s.classList.remove('active'));run.disabled=true;run.textContent='PROCESSING…';let i=0;const tick=()=>{if(i<stages.length){stages[i].classList.add('active');lab.querySelector('.lab-status').innerHTML=`STATUS: <b>STAGE ${i+1}/5</b> · ${scenarios[selected]}`;i++;setTimeout(tick,380)}else{run.disabled=false;run.textContent='RUN SIMULATION';lab.querySelector('.lab-status').innerHTML='STATUS: <b>COMPLETE</b> · CONTROLLED RESPONSE RECOMMENDED'}};tick()});
   }
-
-  // Executive contact surface.
-  if(!document.getElementById('contact')){
-    const contact=document.createElement('section');contact.id='contact';contact.className='panel contact-panel';contact.setAttribute('aria-labelledby','contact-title');
-    contact.innerHTML=`<div><div class="lab-kicker">OPEN TO SELECTIVE OPPORTUNITIES</div><div id="contact-title" class="contact-title">ARCHITECTING<br>THE FUTURE.</div><p class="contact-copy">Systems architecture, AI, cybersecurity, distributed systems and intelligent infrastructure. Based in Kenya. Building for the world.</p><div class="contact-actions"><a class="primary" href="mailto:hello@kandiekandie.com">START A CONVERSATION →</a><a href="https://github.com/Kandie19?tab=repositories" target="_blank" rel="noopener noreferrer">ENGINEERING EVIDENCE</a></div></div><div class="contact-socials"><a href="https://github.com/Kandie19" target="_blank" rel="noopener noreferrer"><img src="${icon('github')}" alt="GitHub">GITHUB</a><a href="https://www.linkedin.com/in/kelvin-kandie/" target="_blank" rel="noopener noreferrer"><img src="${icon('linkedin')}" alt="LinkedIn">LINKEDIN</a><a href="https://x.com/kandiemasasabi" target="_blank" rel="noopener noreferrer"><img src="${icon('x')}" alt="X">X / TWITTER</a><a href="https://www.instagram.com/kandie_masasabi/?hl=en" target="_blank" rel="noopener noreferrer"><img src="${icon('instagram')}" alt="Instagram">INSTAGRAM</a></div>`;
-    main.appendChild(contact);
-  }
-
-  // Make dossier items useful without inventing credentials.
-  document.querySelectorAll('.d-row').forEach((row,index)=>{row.setAttribute('tabindex','0');row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.classList.toggle('is-open')}})});
-
-  // Keep anchor navigation inside the command-center rhythm.
+  if(!document.getElementById('contact')){const contact=document.createElement('section');contact.id='contact';contact.className='panel contact-panel';contact.setAttribute('aria-labelledby','contact-title');contact.innerHTML=`<div><div class="lab-kicker">OPEN TO SELECTIVE OPPORTUNITIES</div><div id="contact-title" class="contact-title">ARCHITECTING<br>THE FUTURE.</div><p class="contact-copy">Systems architecture, AI, cybersecurity, distributed systems and intelligent infrastructure. Based in Kenya. Building for the world.</p><div class="contact-actions"><a class="primary" href="https://www.linkedin.com/in/kelvin-kandie/" target="_blank" rel="noopener noreferrer">START A CONVERSATION →</a><a href="https://github.com/Kandie19?tab=repositories" target="_blank" rel="noopener noreferrer">ENGINEERING EVIDENCE</a></div></div><div class="contact-socials"><a href="https://github.com/Kandie19" target="_blank" rel="noopener noreferrer"><img src="${icon('github')}" alt="GitHub">GITHUB</a><a href="https://www.linkedin.com/in/kelvin-kandie/" target="_blank" rel="noopener noreferrer"><img src="${icon('linkedin')}" alt="LinkedIn">LINKEDIN</a><a href="https://x.com/kandiemasasabi" target="_blank" rel="noopener noreferrer"><img src="${icon('x')}" alt="X">X / TWITTER</a><a href="https://www.instagram.com/kandie_masasabi/?hl=en" target="_blank" rel="noopener noreferrer"><img src="${icon('instagram')}" alt="Instagram">INSTAGRAM</a></div>`;main.appendChild(contact)}
+  document.querySelectorAll('.d-row').forEach(row=>{row.setAttribute('tabindex','0');row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.classList.toggle('is-open')}})});
   document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const target=document.querySelector(a.getAttribute('href'));if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});history.replaceState(null,'',a.getAttribute('href'))}}));
 });
