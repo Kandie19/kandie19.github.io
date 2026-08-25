@@ -8,3 +8,19 @@
 .cc-about{position:relative}.cc-about:after{content:'KENYA';position:absolute;right:12px;bottom:12px;width:105px;height:92px;opacity:.22;background:var(--cyan);clip-path:polygon(39% 0,55% 4%,70% 12%,100% 28%,92% 42%,79% 49%,84% 61%,74% 72%,68% 91%,53% 100%,41% 90%,29% 92%,25% 78%,13% 71%,18% 58%,4% 48%,8% 35%,20% 30%,27% 17%);font-size:10px;color:#02070c;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;z-index:0}.cc-about>*{position:relative;z-index:1}
 @media(min-width:951px){.cc-title h1{font-size:clamp(42px,4.2vw,72px);letter-spacing:.045em;white-space:nowrap}.cc-hero-left{overflow:hidden}.cc-portrait{height:250px;width:210px;max-width:210px}}
 @media(max-width:950px){.cc-sidebar{overflow:visible}.cc-title h1{font-size:clamp(34px,8vw,52px);white-space:normal}.cc-about:after{width:80px;height:70px}}
+
+/* REAL TECHNOLOGY BRAND ICONS — replace placeholder emoji/letters without changing layout. */
+.tech i{font-style:normal;display:block;width:34px;height:34px;margin:0 auto 5px;background-repeat:no-repeat;background-position:center;background-size:contain;font-size:0;line-height:0;opacity:1}
+.tech:nth-child(1) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg')}
+.tech:nth-child(2) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg')}
+.tech:nth-child(3) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg')}
+.tech:nth-child(4) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg')}
+.tech:nth-child(5) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg')}
+.tech:nth-child(6) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg')}
+.tech:nth-child(7) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg')}
+.tech:nth-child(8) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg')}
+.tech:nth-child(9) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg')}
+.tech:nth-child(10) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg')}
+.tech:nth-child(11) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/websocket/websocket-original.svg')}
+.tech:nth-child(12) i{background-image:url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg')}
+@media(max-width:620px){.tech i{width:32px;height:32px}}
