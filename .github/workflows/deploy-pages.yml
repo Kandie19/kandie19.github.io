@@ -33,10 +33,17 @@ jobs:
           cp robots.txt out/robots.txt
           cp sitemap.xml out/sitemap.xml
           cp site.webmanifest out/site.webmanifest
+          cp seo-inject.py out/seo-inject.py
           cp "Kelvin Kandie Favicon.png" out/ 2>/dev/null || true
           cp "Kelvin Kandie LOGO.png" out/ 2>/dev/null || true
           cp profile.jpg.png out/profile.jpg.png
           if [ -d assets ]; then cp -R assets out/assets; fi
+
+      - name: Inject production SEO metadata
+        run: python out/seo-inject.py
+
+      - name: Remove build-only files
+        run: rm -f out/seo-inject.py
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
