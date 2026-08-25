@@ -25,20 +25,17 @@ jobs:
         run: |
           rm -rf out
           mkdir -p out
-          cp index.html out/index.html
-          cp styles.css out/styles.css
-          cp script.js out/script.js
-          cp final.css out/final.css 2>/dev/null || true
-          cp polish.css out/polish.css 2>/dev/null || true
-          cp production.css out/production.css
-          cp experience.js out/experience.js
+          # Preserve the complete multi-page portfolio while ensuring the
+          # command-center render assets are actually included in Pages.
+          cp -- *.html out/ 2>/dev/null || true
+          cp -- *.css out/ 2>/dev/null || true
+          cp -- *.js out/ 2>/dev/null || true
           cp robots.txt out/robots.txt
           cp sitemap.xml out/sitemap.xml
           cp site.webmanifest out/site.webmanifest
           cp seo-inject.py out/seo-inject.py
-          cp "Kelvin Kandie Favicon.png" out/ 2>/dev/null || true
-          cp "Kelvin Kandie LOGO.png" out/ 2>/dev/null || true
-          cp profile.jpg.png out/profile.jpg.png
+          cp -- *.png out/ 2>/dev/null || true
+          cp -- *.jpg out/ 2>/dev/null || true
           if [ -d assets ]; then cp -R assets out/assets; fi
 
       - name: Inject production SEO metadata
