@@ -5,14 +5,16 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 
+const favicon = 'https://raw.githubusercontent.com/Kandie19/kandie19.github.io/main/Kelvin%20Kandie%20Favicon.png';
+
 export const metadata: Metadata = {
   title: 'Kelvin Kandie | Executive Command Center',
   description: 'Systems Architect, AI & Cybersecurity Engineer Portfolio and Command Center.',
   keywords: ['Kelvin Kandie', 'AEGIS', 'Systems Architect', 'Cybersecurity', 'AI Engineer'],
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
+    icon: [{ url: favicon, type: 'image/png' }],
+    shortcut: [{ url: favicon, type: 'image/png' }],
+    apple: [{ url: favicon, type: 'image/png' }],
   },
 };
 
