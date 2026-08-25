@@ -26,19 +26,13 @@ jobs:
           rm -rf out
           mkdir -p out
           cp index.html out/index.html
-          cp polish.css out/polish.css
-          cp "Kelvin Kandie Favicon.png" out/
-          cp "Kelvin Kandie LOGO.png" out/
-          cp profile.jpg.png out/
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('out/index.html')
-          html = path.read_text(encoding='utf-8')
-          link = '<link rel="stylesheet" href="polish.css">'
-          if link not in html:
-              html = html.replace('</head>', link + '</head>', 1)
-          path.write_text(html, encoding='utf-8')
-          PY
+          cp styles.css out/styles.css
+          cp script.js out/script.js
+          cp polish.css out/polish.css 2>/dev/null || true
+          cp "Kelvin Kandie Favicon.png" out/ 2>/dev/null || true
+          cp "Kelvin Kandie LOGO.png" out/ 2>/dev/null || true
+          cp profile.jpg.png out/profile.jpg.png
+          if [ -d assets ]; then cp -R assets out/assets; fi
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
