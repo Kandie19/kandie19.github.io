@@ -1,0 +1,19 @@
+/* Final command-center presentation layer — Kelvin-first branding, AEGIS kept high-level. */
+.hero{height:365px;grid-template-columns:43% 57%;}
+.hero h1{font-family:Georgia,'Times New Roman',serif;font-style:italic;text-transform:uppercase;letter-spacing:.045em;color:#fff;font-weight:700;font-size:50px;}
+.hero-visual{background:radial-gradient(circle at 50% 45%,rgba(0,130,190,.10),transparent 45%);}
+.hero-visual .globe{display:none;}
+.hero-visual:before{content:"";position:absolute;z-index:2;left:2%;top:15px;width:430px;height:330px;background:url('Kelvin%20Kandie%20Favicon.png') center/contain no-repeat;opacity:.82;filter:drop-shadow(0 0 18px rgba(0,220,255,.18));}
+.hero-visual .portrait{z-index:6;height:94%;left:-1%;max-width:52%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 18px 22px rgba(0,0,0,.7)) drop-shadow(0 0 8px rgba(0,210,255,.12));}
+.hero-visual .socials,.hero-visual .location-card,.hero-visual .status-card{z-index:12;}
+.aegis-card .stack-graphic{background:url('AEGIS%20new%20LOGO.png') center/contain no-repeat;filter:drop-shadow(0 0 10px rgba(0,220,255,.28));}
+.aegis-card .stack-graphic>*{display:none;}
+.aegis-card .three-stage{display:none;}
+.aegis-card .aegis-inner{grid-template-columns:45% 55%;min-height:245px;}
+.aegis-card .aegis-copy p{max-width:280px;}
+.impact-stats{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:18px 26px !important;}
+.impact-stats>div{min-width:0 !important;overflow:hidden;}
+.impact-stats strong{display:block;white-space:normal !important;overflow-wrap:anywhere;word-break:normal;line-height:1.05 !important;font-size:27px !important;}
+.impact-stats span{display:block;white-space:normal !important;line-height:1.4 !important;}
+@media(max-width:1100px){.hero{grid-template-columns:1fr 1fr;height:390px}.hero h1{font-size:43px}.hero-visual:before{width:350px;left:0}.hero-visual .portrait{max-width:58%;}.impact-stats{gap:14px !important;}}
+@media(max-width:800px){.hero{grid-template-columns:1fr;height:auto;min-height:650px}.hero-copy{order:1}.hero-visual{order:2;min-height:330px}.hero-visual:before{width:320px;left:50%;transform:translateX(-50%)}.hero-visual .portrait{left:50%;transform:translateX(-50%);max-width:65%;}.impact-stats{grid-template-columns:1fr !important;}.aegis-card .aegis-inner{grid-template-columns:1fr;}.aegis-card .stack-graphic{height:180px;}.aegis-card .aegis-copy p{max-width:none;}}
