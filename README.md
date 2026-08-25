@@ -4,6 +4,9 @@
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-kandie19.github.io-071116?style=for-the-badge&logo=google-chrome&logoColor=18e6e2)](https://kandie19.github.io/)
 [![GitHub](https://img.shields.io/badge/GitHub-Kandie19-071116?style=for-the-badge&logo=github&logoColor=ffffff)](https://github.com/Kandie19)
+[![X](https://img.shields.io/badge/X-@kandiemasasabi-071116?style=for-the-badge&logo=x&logoColor=ffffff)](https://x.com/kandiemasasabi)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kelvin%20Kandie-071116?style=for-the-badge&logo=linkedin&logoColor=0A66C2)](https://www.linkedin.com/in/kelvin-kandie/)
+[![Instagram](https://img.shields.io/badge/Instagram-@kandie__masasabi-071116?style=for-the-badge&logo=instagram&logoColor=E4405F)](https://www.instagram.com/kandie_masasabi/?hl=en)
 
 ---
 
@@ -242,7 +245,10 @@ The portfolio is intentionally a **window into the engineering**, not a transpar
 Founder · Systems Architect · AI & Cybersecurity Engineer · Builder
 
 **Portfolio:** [kandie19.github.io](https://kandie19.github.io/)  
-**GitHub:** [github.com/Kandie19](https://github.com/Kandie19)
+**GitHub:** [github.com/Kandie19](https://github.com/Kandie19)  
+**X:** [@kandiemasasabi](https://x.com/kandiemasasabi)  
+**LinkedIn:** [Kelvin Kandie](https://www.linkedin.com/in/kelvin-kandie/)  
+**Instagram:** [@kandie_masasabi](https://www.instagram.com/kandie_masasabi/?hl=en)
 
 For engineering, architecture, cybersecurity, AI, product, research, or technology leadership conversations, the portfolio is the best place to begin.
 
