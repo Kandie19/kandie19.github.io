@@ -1,53 +1,60 @@
-/* Final command-center hero refinement: compact portrait, clear K identity mark, and fully visible KELVIN KANDIE heading. */
-.cc-hero-left{position:relative;align-items:flex-end;justify-content:flex-start;padding:0 0 0 12px;overflow:hidden;background-image:url('Kelvin%20Kandie%20LOGO.png');background-repeat:no-repeat;background-size:285px 285px;background-position:64% 50%;}
-.cc-portrait{height:245px;width:205px;max-width:205px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 18px #000);z-index:5;flex:0 0 auto;position:relative;left:14px;}
-.cc-k-glow{left:82px;bottom:0;top:auto;width:282px;height:274px;border-radius:50%;background:radial-gradient(circle,#00e7f51f 0%,#00e7f506 40%,transparent 70%);border:1px solid #00e7f53b;z-index:1;pointer-events:none;}
-.cc-title{min-width:0;padding:48px 20px 0 6px;align-self:center;overflow:visible;}
-.cc-title h1{font-size:clamp(46px,4.25vw,70px);letter-spacing:.045em;white-space:nowrap;line-height:.96;}
-.cc-title p{font-size:15px;letter-spacing:.36em;white-space:nowrap;}
+/* Final approved command-center render: compact portrait, visible K identity mark, full hero name, and readable card content. */
+.cc-hero{grid-template-columns:430px minmax(0,1fr);}
+.cc-hero-left{position:relative;display:flex;align-items:flex-end;justify-content:flex-start;padding:0 0 0 10px;overflow:hidden;background-image:url('Kelvin%20Kandie%20LOGO.png');background-repeat:no-repeat;background-size:285px 285px;background-position:64% 50%;}
+.cc-portrait{height:250px;width:210px;max-width:210px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 18px #000);z-index:5;flex:0 0 auto;position:relative;left:12px;}
+.cc-k-glow{position:absolute;left:86px;bottom:0;top:auto;width:285px;height:278px;border-radius:50%;background:radial-gradient(circle,#00e7f51f 0%,#00e7f506 40%,transparent 70%);border:1px solid #00e7f53b;z-index:1;pointer-events:none;}
+.cc-title{container-type:inline-size;min-width:0;padding:48px 22px 0 8px;align-self:center;text-align:center;overflow:visible;}
+.cc-title h1{margin:0;font-size:clamp(36px,10cqw,72px);letter-spacing:.025em;white-space:nowrap;line-height:.96;}
+.cc-title p{font-size:15px;letter-spacing:.32em;white-space:nowrap;}
+.cc-title .line{margin-left:auto;margin-right:auto;}
 .cc-metrics{margin-top:0;}
-.cc-metric{padding:17px 19px;gap:12px;}
-.cc-metric small{font-size:11px;line-height:1.25;white-space:normal;}
+.cc-metric{min-width:0;padding:17px 16px;gap:10px;}
+.cc-metric small{font-size:11px;line-height:1.2;white-space:normal;}
 .cc-metric strong{font-size:29px;line-height:1.1;margin:4px 0;}
 .cc-metric span{font-size:11px;line-height:1.3;white-space:normal;}
 .cc-grid,.cc-row{gap:9px;}
-.cc-card{padding:16px 17px;}
-.cc-card h2{font-size:17px;margin-bottom:14px;}
+.cc-card{min-width:0;padding:16px 17px;overflow:hidden;}
+.cc-card h2{font-size:17px;margin-bottom:14px;white-space:normal;line-height:1.15;overflow-wrap:anywhere;}
 .cc-card p{font-size:13px;line-height:1.5;}
-.cc-aegis-content{grid-template-columns:minmax(190px,1.05fr) minmax(185px,.95fr);gap:16px;}
-.cc-aegis-logo{height:185px;}
+.cc-aegis-content{grid-template-columns:minmax(190px,1.05fr) minmax(185px,.95fr);gap:16px;align-items:center;}
+.cc-aegis-logo{height:185px;width:100%;object-fit:contain;background:#000;border-radius:5px;}
 .cc-aegis-points{min-width:0;overflow:visible;}
 .cc-aegis-points p{font-size:13px;line-height:1.45;margin-bottom:9px;}
 .cc-aegis-points li{font-size:11px;margin:8px 0;line-height:1.35;white-space:normal;}
-.cc-chip{min-height:38px;padding:8px 10px;font-size:11px;line-height:1.2;}
+.cc-chip{min-height:38px;padding:8px 10px;font-size:11px;line-height:1.2;white-space:normal;}
 .cc-project{padding:10px 0;}
 .cc-stack{gap:10px 7px;}
 .tech{font-size:9px;}
 .tech i{font-size:22px;height:28px;}
+
 @media(max-width:1250px){
+  .cc-shell{grid-template-columns:240px minmax(0,1fr);}
   .cc-hero{grid-template-columns:340px minmax(0,1fr);}
-  .cc-hero-left{background-size:260px 260px;background-position:60% 52%;}
-  .cc-portrait{height:225px;width:190px;max-width:190px;left:12px;}
-  .cc-k-glow{left:68px;width:258px;height:253px;}
+  .cc-hero-left{background-size:255px 255px;background-position:60% 52%;}
+  .cc-portrait{height:225px;width:190px;max-width:190px;left:10px;}
+  .cc-k-glow{left:67px;width:255px;height:250px;}
   .cc-title{padding-right:12px;}
-  .cc-title h1{font-size:clamp(42px,4vw,62px);letter-spacing:.025em;}
-  .cc-title p{font-size:12px;letter-spacing:.27em;}
+  .cc-title h1{font-size:clamp(34px,10cqw,62px);letter-spacing:.015em;}
+  .cc-title p{font-size:12px;letter-spacing:.25em;}
   .cc-metric{padding:15px 11px;}
   .cc-metric strong{font-size:25px;}
   .cc-aegis-content{grid-template-columns:1fr 1fr;}
   .cc-aegis-logo{height:160px;}
 }
+
 @media(max-width:950px){
+  .cc-shell{display:block;}
   .cc-hero{grid-template-columns:330px minmax(0,1fr);}
-  .cc-hero-left{background-size:260px 260px;background-position:50% 52%;justify-content:center;}
-  .cc-portrait{height:245px;width:205px;max-width:205px;left:0;}
-  .cc-k-glow{left:50%;transform:translateX(-50%);width:270px;height:260px;}
+  .cc-hero-left{background-size:250px 250px;background-position:50% 52%;justify-content:center;}
+  .cc-portrait{height:240px;width:200px;max-width:200px;left:0;}
+  .cc-k-glow{left:50%;transform:translateX(-50%);width:260px;height:250px;}
   .cc-title{padding:15px 14px 25px;}
-  .cc-title h1{font-size:clamp(40px,5vw,52px);letter-spacing:.02em;white-space:nowrap;}
+  .cc-title h1{font-size:clamp(34px,9cqw,52px);letter-spacing:.015em;white-space:nowrap;}
   .cc-title p{white-space:normal;letter-spacing:.2em;}
   .cc-aegis-content{grid-template-columns:1fr;}
   .cc-aegis-logo{height:180px;}
 }
+
 @media(max-width:620px){
   .cc-hero{display:block;min-height:520px;}
   .cc-hero-left{height:270px;padding:0;background-size:250px 250px;background-position:50% 48%;}
