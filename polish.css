@@ -12,7 +12,7 @@ body{text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
 .hero-copy h2{text-wrap:balance}.hero-desc{text-wrap:pretty}
 .hero-btn,.aegis-btn,.run,.lab-back{transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
 .hero-btn:hover,.aegis-btn:hover,.run:hover,.lab-back:hover{transform:translateY(-1px);box-shadow:0 0 18px rgba(0,245,234,.12)}
-.portrait-wrap{right:25%;width:30%}.portrait{object-fit:contain;object-position:center bottom;transform:translateZ(0)}
+.portrait-wrap{right:25%;width:30.5%}.portrait{object-fit:contain;object-position:center bottom;transform:translateZ(0)}
 .globe{right:-2%}.hud-card{box-shadow:0 8px 20px rgba(0,0,0,.22)}
 .card{transition:border-color .18s ease,box-shadow .18s ease}.card:hover{border-color:#365660;box-shadow:inset 0 0 24px rgba(0,245,234,.025)}
 .activity-row:hover,.dossier-item:hover{background:rgba(0,245,234,.025)}
@@ -27,3 +27,25 @@ body{text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
 @media (max-width:900px){.portrait-wrap{right:2%;width:43%;height:80%}}
 @media (max-width:620px){.portrait-wrap{right:-5%;width:78%;height:50%}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* AEGIS INTELLIGENCE CARD — high-level product language only */
+#architecture .card-title{font-size:0}
+#architecture .card-title:after{content:"AEGIS SECURITY INTELLIGENCE";font-size:10px}
+#architecture .impact-stat:nth-child(1) b{font-size:0}
+#architecture .impact-stat:nth-child(1) b:after{content:"LIVE";font-size:17px}
+#architecture .impact-stat:nth-child(1) small{font-size:0}
+#architecture .impact-stat:nth-child(1) small:after{content:"SECURITY SIGNAL VISIBILITY";font-size:6px}
+#architecture .impact-stat:nth-child(2) b{font-size:0}
+#architecture .impact-stat:nth-child(2) b:after{content:"CONTEXT";font-size:17px}
+#architecture .impact-stat:nth-child(2) small{font-size:0}
+#architecture .impact-stat:nth-child(2) small:after{content:"IDENTITY + BEHAVIOUR AWARENESS";font-size:6px}
+#architecture .impact-stat:nth-child(3) b{font-size:0}
+#architecture .impact-stat:nth-child(3) b:after{content:"RISK";font-size:17px}
+#architecture .impact-stat:nth-child(3) small{font-size:0}
+#architecture .impact-stat:nth-child(3) small:after{content:"CONTINUOUS THREAT ASSESSMENT";font-size:6px}
+#architecture .impact-stat:nth-child(4) b{font-size:0}
+#architecture .impact-stat:nth-child(4) b:after{content:"READY";font-size:17px}
+#architecture .impact-stat:nth-child(4) small{font-size:0}
+#architecture .impact-stat:nth-child(4) small:after{content:"DECISION & RESPONSE INTELLIGENCE";font-size:6px}
+#architecture .world-map:after{content:"AEGIS";position:absolute;inset:0;display:grid;place-items:center;color:rgba(0,245,234,.16);font:900 34px/1 'JetBrains Mono',monospace;letter-spacing:.16em;text-shadow:0 0 18px rgba(0,245,234,.2)}
+@media(max-width:620px){#architecture .impact{grid-template-columns:55% 45%}#architecture .impact-stat{margin-bottom:9px}}
