@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded',()=>{
   if(window.lucide) lucide.createIcons();
+  const finalStyle=document.createElement('link');
+  finalStyle.rel='stylesheet';
+  finalStyle.href='command-center-final.css';
+  document.head.appendChild(finalStyle);
   const pageRoutes={
     '#overview':'overview.html',
     '#aegis':'aegis.html',
