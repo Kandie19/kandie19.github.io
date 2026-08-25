@@ -1,2 +1,28 @@
-/* Final command-center portrait treatment: compact and aligned to the approved render. */
-.cc-hero-left{align-items:flex-end;padding:0 0 0 14px}.cc-portrait{height:280px;width:245px;max-width:245px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 18px #000);z-index:5;flex:0 0 auto}.cc-k-glow{left:105px;bottom:2px;top:auto;width:300px;height:290px}.cc-title{min-width:0;padding-right:30px}.cc-title h1{font-size:clamp(52px,5.2vw,82px);letter-spacing:.12em;white-space:nowrap}@media(max-width:1250px){.cc-portrait{height:270px;width:225px;max-width:225px}.cc-k-glow{width:280px;height:270px}.cc-title h1{font-size:clamp(46px,4.5vw,68px)}}@media(max-width:950px){.cc-portrait{height:270px;width:225px;max-width:225px}.cc-k-glow{left:90px;width:280px}}@media(max-width:620px){.cc-hero-left{height:280px;padding-left:0;justify-content:center}.cc-portrait{height:260px;width:220px;max-width:220px}.cc-k-glow{left:50%;transform:translateX(-50%);width:300px;height:270px}.cc-title{padding-right:10px}.cc-title h1{font-size:40px;letter-spacing:.08em;white-space:normal}}
+/* Final approved command-center portrait treatment. Keep the portrait compact, preserve the K identity mark behind it, and keep the hero composition cohesive. */
+.cc-hero-left{position:relative;align-items:flex-end;justify-content:flex-start;padding:0 0 0 12px;overflow:hidden;background-image:url('Kelvin%20Kandie%20LOGO.png');background-repeat:no-repeat;background-size:295px 295px;background-position:64% 50%;}
+.cc-portrait{height:258px;width:218px;max-width:218px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 18px #000);z-index:5;flex:0 0 auto;position:relative;left:18px;}
+.cc-k-glow{left:86px;bottom:0;top:auto;width:292px;height:284px;border-radius:50%;background:radial-gradient(circle,#00e7f51f 0%,#00e7f506 40%,transparent 70%);border:1px solid #00e7f53b;z-index:1;pointer-events:none;}
+.cc-title{min-width:0;padding:52px 28px 0 8px;align-self:center;}
+.cc-title h1{font-size:clamp(50px,5vw,78px);letter-spacing:.115em;white-space:nowrap;line-height:.94;}
+.cc-title p{font-size:16px;letter-spacing:.42em;}
+.cc-metrics{margin-top:0;}
+.cc-metric{padding:17px 19px;gap:12px;}
+.cc-metric small{font-size:11px;line-height:1.25;white-space:normal;}
+.cc-metric strong{font-size:29px;line-height:1.1;margin:4px 0;}
+.cc-metric span{font-size:11px;line-height:1.3;white-space:normal;}
+.cc-grid,.cc-row{gap:9px;}
+.cc-card{padding:16px 17px;}
+.cc-card h2{font-size:17px;margin-bottom:14px;}
+.cc-card p{font-size:13px;line-height:1.5;}
+.cc-aegis-content{grid-template-columns:minmax(170px,1fr) minmax(175px,1fr);gap:15px;}
+.cc-aegis-logo{height:190px;}
+.cc-aegis-points p{font-size:13px;line-height:1.45;margin-bottom:9px;}
+.cc-aegis-points li{font-size:11px;margin:8px 0;line-height:1.35;}
+.cc-chip{min-height:38px;padding:8px 10px;font-size:11px;line-height:1.2;}
+.cc-project{padding:10px 0;}
+.cc-stack{gap:10px 7px;}
+.tech{font-size:9px;}
+.tech i{font-size:22px;height:28px;}
+@media(max-width:1250px){.cc-hero-left{background-size:270px 270px;background-position:60% 52%;}.cc-portrait{height:245px;width:205px;max-width:205px;left:14px;}.cc-k-glow{left:76px;width:270px;height:265px;}.cc-title{padding-right:18px;}.cc-title h1{font-size:clamp(45px,4.4vw,67px);}.cc-title p{font-size:13px;letter-spacing:.3em;}.cc-metric{padding:15px 11px;}.cc-metric strong{font-size:25px;}.cc-aegis-content{grid-template-columns:1fr 1fr;}.cc-aegis-logo{height:165px;}}
+@media(max-width:950px){.cc-hero-left{background-size:270px 270px;background-position:50% 52%;justify-content:center;}.cc-portrait{height:255px;width:210px;max-width:210px;left:0;}.cc-k-glow{left:50%;transform:translateX(-50%);width:280px;height:270px;}.cc-title{padding:15px 14px 25px;}.cc-title h1{font-size:46px;white-space:normal;}.cc-title p{white-space:normal;letter-spacing:.24em;}.cc-aegis-content{grid-template-columns:1fr;}.cc-aegis-logo{height:180px;}}
+@media(max-width:620px){.cc-hero-left{height:270px;padding:0;background-size:250px 250px;background-position:50% 48%;}.cc-portrait{height:245px;width:205px;max-width:205px;}.cc-k-glow{width:260px;height:255px;}.cc-title{padding:8px 10px 20px;}.cc-title h1{font-size:39px;letter-spacing:.07em;}.cc-title p{font-size:10px;letter-spacing:.2em;}.cc-metric{padding:15px 18px;}.cc-metric strong{font-size:27px;}.cc-chip{font-size:12px;}}
