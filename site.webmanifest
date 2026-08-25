@@ -1,0 +1,22 @@
+{
+  "name": "Kelvin Kandie | Systems Architect",
+  "short_name": "Kelvin Kandie",
+  "description": "Executive portfolio of Kelvin Kandie — Systems Architect, AI & Cybersecurity Engineer, and builder of intelligent systems.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#02070b",
+  "theme_color": "#02070b",
+  "icons": [
+    {
+      "src": "/Kelvin%20Kandie%20Favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Kelvin%20Kandie%20Favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
