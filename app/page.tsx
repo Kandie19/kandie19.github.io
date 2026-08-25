@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Link from 'next/link';
 import {
   LayoutGrid, Activity, Shield, Code, GitBranch, Archive, Mail,
   Moon, Sun, Github, Twitter, Linkedin, ArrowRight, Zap, Target,
@@ -25,7 +26,7 @@ export default function PortfolioDashboard() {
             <NavItem icon={<Activity size={18} />} label="OVERVIEW" />
             <NavItem icon={<Shield size={18} />} label="AEGIS PLATFORM" />
             <NavItem icon={<Server size={18} />} label="ARCHITECTURE" />
-            <NavItem icon={<Code size={18} />} label="ENGINEERING" />
+            <NavItem icon={<Code size={18} />} label="ENGINEERING" href="/engineering" />
             <NavItem icon={<GitBranch size={18} />} label="REPOSITORIES" />
             <NavItem icon={<Archive size={18} />} label="DOSSIER" />
             <NavItem icon={<Mail size={18} />} label="CONTACT" />
@@ -99,7 +100,7 @@ export default function PortfolioDashboard() {
               <li className="flex items-center gap-3"><Database size={16} className="text-cyan-500" /> Intelligence: Understand Everything</li>
               <li className="flex items-center gap-3"><Settings size={16} className="text-cyan-500" /> Autonomy: Act Intelligently</li>
             </ul>
-            <button className="text-xs font-bold border border-cyan-500 text-cyan-500 px-4 py-2 rounded-full hover:bg-cyan-500 hover:text-slate-900 transition-all">EXPLORE AEGIS →</button>
+            <Link href="/engineering" className="inline-block text-xs font-bold border border-cyan-500 text-cyan-500 px-4 py-2 rounded-full hover:bg-cyan-500 hover:text-slate-900 transition-all">ENTER ENGINEERING LAB →</Link>
           </Widget>
 
           <Widget title="TECHNOLOGY CONSTELLATION">
@@ -165,8 +166,10 @@ export default function PortfolioDashboard() {
   );
 }
 
-function NavItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
-  return <div className={`flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-colors text-sm font-semibold tracking-wider ${active ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : 'text-slate-500 hover:text-slate-300 hover:bg-slate-900'}`}>{icon}{label}</div>
+function NavItem({ icon, label, active = false, href }: { icon: React.ReactNode, label: string, active?: boolean, href?: string }) {
+  const content = <>{icon}{label}</>;
+  const className = `flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-colors text-sm font-semibold tracking-wider ${active ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : 'text-slate-500 hover:text-slate-300 hover:bg-slate-900'}`;
+  return href ? <Link href={href} className={className}>{content}</Link> : <div className={className}>{content}</div>;
 }
 
 function Metric({ value, label }: { value: string, label: string }) {
