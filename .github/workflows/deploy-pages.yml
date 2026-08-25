@@ -30,6 +30,8 @@ jobs:
           cp script.js out/script.js
           cp final.css out/final.css 2>/dev/null || true
           cp polish.css out/polish.css 2>/dev/null || true
+          cp production.css out/production.css
+          cp experience.js out/experience.js
           cp robots.txt out/robots.txt
           cp sitemap.xml out/sitemap.xml
           cp site.webmanifest out/site.webmanifest
