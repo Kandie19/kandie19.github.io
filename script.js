@@ -29,4 +29,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.body.classList.toggle('light-preview');
     const sw=toggle.querySelector('.switch');if(sw)sw.classList.toggle('on');
   });
+  if(document.querySelector('.impact')){
+    const fix=document.createElement('link');
+    fix.rel='stylesheet';fix.href='impact-fix.css';
+    document.head.appendChild(fix);
+  }
 });
