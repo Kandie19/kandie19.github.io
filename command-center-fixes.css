@@ -1,18 +1,61 @@
-/* Final command-center fixes: preserve the approved render while making the sidebar independently scrollable and the Kenya marker unmistakably a flag. */
+/* Final command-center polish — preserve the approved render, strengthen hierarchy, spacing, accessibility and the Kenya identity mark. */
 .cc-sidebar{overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#00e7f5 #061017;overscroll-behavior:contain}
 .cc-sidebar::-webkit-scrollbar{width:6px}
 .cc-sidebar::-webkit-scrollbar-track{background:#061017}
 .cc-sidebar::-webkit-scrollbar-thumb{background:#00e7f5;border-radius:10px}
 .cc-brand,.cc-nav,.cc-status,.cc-social,.cc-copy{flex-shrink:0}
-.cc-kenya{height:28px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
-.kenya-flag{position:relative;display:block;width:31px;height:21px;border-radius:2px;overflow:hidden;background:linear-gradient(to bottom,#111 0 28%,#fff 28% 34%,#b3131b 34% 66%,#fff 66% 72%,#111 72% 100%);box-shadow:0 0 7px #000,0 0 5px #00e7f544}
-.kenya-flag:before{content:"";position:absolute;left:50%;top:50%;width:8px;height:15px;transform:translate(-50%,-50%);background:#fff;border-radius:48% 48% 44% 44%;box-shadow:0 0 0 1px #111}
-.kenya-flag:after{content:"";position:absolute;left:50%;top:50%;width:3px;height:17px;transform:translate(-50%,-50%);background:#111;border-radius:2px;box-shadow:0 0 0 1px #b3131b}
+.cc-kenya{height:32px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px}
+.kenya-flag{display:block;width:38px;height:25px;flex:0 0 auto;object-fit:fill;border:1px solid #54717b;border-radius:2px;background:#006b3f;box-shadow:0 0 0 1px #00e7f51a,0 0 10px #00e7f51c}
 
-/* Kenya silhouette: real geographic outline, rendered only as a thin cyan technical contour behind About Me. */
+/* Real Kenya outline: thin cyan technical contour behind About Me. */
 .cc-about{position:relative;isolation:isolate;overflow:hidden}
-.cc-about:after{content:"";position:absolute;right:14px;bottom:8px;width:112px;height:132px;z-index:0;pointer-events:none;opacity:.82;background:url("./assets/kenya-outline.svg") center/contain no-repeat}
+.cc-about:after{content:"";position:absolute;right:14px;bottom:8px;width:112px;height:132px;z-index:0;pointer-events:none;opacity:.82;background:url("./assets/kenya-outline.svg") center/contain no-repeat;filter:drop-shadow(0 0 5px #00e7f533)}
 .cc-about>*{position:relative;z-index:1}
-@media(max-width:620px){.cc-about:after{right:10px;bottom:10px;width:92px;height:108px;opacity:.72}}
 
-@media(max-width:950px){.cc-sidebar{overflow-y:visible;overflow-x:visible}}
+/* Premium visual polish without changing the approved composition. */
+.cc-main{position:relative}
+.cc-main:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.18;background-image:linear-gradient(#00e7f506 1px,transparent 1px),linear-gradient(90deg,#00e7f506 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000 0%,transparent 78%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,transparent 78%)}
+.cc-main>*{position:relative;z-index:1}
+.cc-card,.cc-metrics,.cc-quote{box-shadow:0 0 0 1px #00e7f508 inset,0 12px 30px #00000018}
+.cc-card{transition:border-color .22s ease,box-shadow .22s ease,transform .22s ease}
+.cc-card:hover{border-color:#00e7f54d;box-shadow:0 0 0 1px #00e7f514 inset,0 0 24px #00e7f510,0 14px 34px #00000022}
+.cc-nav a{min-height:42px}
+.cc-nav a:focus-visible,.cc-social a:focus-visible,.cc-btn:focus-visible,.cc-brand:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.cc-title h1{font-size:clamp(42px,4.45vw,76px);letter-spacing:.045em;line-height:.96;text-shadow:0 0 24px #ffffff0d}
+.cc-title p{letter-spacing:.24em}
+.cc-kicker{letter-spacing:.27em}
+.cc-card h2{letter-spacing:.025em;text-wrap:balance}
+.cc-card p,.cc-aegis-points li,.cc-chip,.cc-project small,.feed span{overflow-wrap:anywhere}
+.cc-metric small,.cc-metric span{letter-spacing:.01em}
+.cc-metric strong{letter-spacing:.01em}
+.cc-aegis-logo{box-shadow:0 0 18px #00e7f50c}
+.cc-btn{transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.cc-btn:hover{background:#00e7f50d;border-color:var(--cyan);box-shadow:0 0 18px #00e7f51a;transform:translateY(-1px)}
+.cc-chip{transition:border-color .2s ease,background .2s ease,transform .2s ease}
+.cc-chip:hover{border-color:#00e7f5aa;background:#00e7f508;transform:translateY(-1px)}
+.cc-topbar{box-shadow:0 0 20px #00e7f50b}
+.cc-topbar .online:before{box-shadow:0 0 12px #25ed55}
+.cc-quote{background:linear-gradient(90deg,#02080d,#041018,#02080d)}
+.cc-footer{border-top:1px solid #0c2a34;margin-top:2px}
+
+@media(max-width:1250px){
+  .cc-title h1{font-size:clamp(40px,4vw,68px);letter-spacing:.035em}
+  .cc-kicker{letter-spacing:.22em}
+  .cc-title p{letter-spacing:.18em}
+  .cc-metric small{font-size:10px}
+}
+@media(max-width:950px){
+  .cc-sidebar{overflow-y:visible;overflow-x:visible}
+  .cc-main:before{position:absolute}
+  .cc-title h1{font-size:46px;letter-spacing:.035em}
+}
+@media(max-width:620px){
+  .cc-about:after{right:10px;bottom:10px;width:92px;height:108px;opacity:.72}
+  .kenya-flag{width:34px;height:23px}
+  .cc-title h1{font-size:40px;letter-spacing:.055em}
+  .cc-kicker{letter-spacing:.16em}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .cc-card,.cc-btn,.cc-chip{transition:none}
+}
