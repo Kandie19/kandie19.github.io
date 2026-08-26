@@ -1,47 +1,42 @@
-/* Approved command-center render: technical identity + executive signature polish. */
+/* FINAL APPROVED COMMAND-CENTER RENDER */
 @import url('https://fonts.googleapis.com/css2?family=Allura&family=Orbitron:wght@500;600;700&display=swap');
 
-/* Technical identity in the upper-left rail — compact, angular, fully visible. */
 .cc-brand{align-items:center;gap:12px;padding-right:2px}
 .cc-brand strong{font-family:'Orbitron',system-ui,sans-serif;font-style:italic;font-weight:700;font-size:16px;line-height:1.12;letter-spacing:.035em;white-space:normal;display:block;max-width:158px;color:#f8fbfc;text-shadow:0 0 10px #00e7f51a,0 1px 0 #000;transform:skewX(-5deg);transform-origin:left center}
 .cc-brand small{font-family:Orbitron,Inter,sans-serif;font-size:9px;letter-spacing:.015em;white-space:nowrap}
 
-/* Hero: Kelvin portrait nestled in front of the Kelvin globe/logo. */
+/* Portrait deliberately smaller and nestled beside — never over — the Kelvin globe. */
 .cc-hero-left{position:relative;isolation:isolate;overflow:hidden}
-.cc-hero-left:before{content:'';position:absolute;left:50%;bottom:-8px;width:310px;height:310px;transform:translateX(-50%);background:url('./Kelvin%20Kandie%20LOGO.png') center/contain no-repeat;opacity:.94;z-index:1;filter:drop-shadow(0 0 13px #00e7f555)}
+.cc-hero-left:before{content:'';position:absolute;left:62%;bottom:-2px;width:255px;height:255px;transform:translateX(-50%);background:url('./Kelvin%20Kandie%20LOGO.png') center/contain no-repeat;opacity:.94;z-index:1;filter:drop-shadow(0 0 13px #00e7f555)}
 .cc-k-glow{z-index:2;pointer-events:none}
-.cc-portrait{position:relative;z-index:3;height:292px;width:238px;max-width:238px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 14px 18px #000)}
+.cc-portrait{position:relative;z-index:3;height:225px;width:172px;max-width:172px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 14px 18px #000);margin-left:10px;align-self:flex-end;transform:translateY(1px)}
 
-/* Hero title: futuristic executive display treatment with safe bounds. */
 .cc-title{position:relative;z-index:4;padding-right:clamp(16px,2.5vw,42px);min-width:0;overflow:visible}
 .cc-title h1{font-family:'Orbitron','Bodoni Moda',sans-serif;font-style:italic;font-weight:700;font-size:clamp(38px,4vw,62px);line-height:1;letter-spacing:.055em;white-space:nowrap;max-width:100%;color:#f8fafb;text-shadow:0 0 18px #ffffff12;transform:skewX(-4deg);transform-origin:left center}
 .cc-kicker{font-family:Orbitron,Inter,sans-serif;font-size:11px;letter-spacing:.18em}
 
-/* Gold executive signature — expressive, elegant and intentionally premium. */
 .cc-signature-side{font-family:'Allura','Bodoni Moda','Cormorant Garamond',cursive;font-style:normal;font-weight:400;font-size:42px;line-height:.85;letter-spacing:.01em;color:#f0cf73;background:linear-gradient(120deg,#b9852d 0%,#ffeaa0 38%,#c99335 68%,#fff0ad 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 2px 2px #000,0 0 11px #d6a94344;transform:rotate(-2deg);transform-origin:center;white-space:nowrap;margin:16px 2px 6px}
 .cc-signature-side small{font-family:Orbitron,Inter,sans-serif;font-size:6.5px;letter-spacing:.14em;-webkit-text-fill-color:var(--cyan);transform:rotate(2deg)}
-
-/* Preserve the supplied status-panel proportions. */
 .cc-status{min-height:103px}
 
 @media(max-width:1250px){
   .cc-brand strong{font-size:14.5px;max-width:145px}
-  .cc-hero-left:before{width:285px;height:285px}
-  .cc-portrait{height:272px;width:222px;max-width:222px}
+  .cc-hero-left:before{left:64%;width:235px;height:235px}
+  .cc-portrait{height:208px;width:160px;max-width:160px;margin-left:8px}
   .cc-title h1{font-size:clamp(34px,3.6vw,52px);letter-spacing:.04em}
   .cc-signature-side{font-size:36px}
 }
 @media(max-width:950px){
   .cc-brand strong{font-size:16px;max-width:170px}
-  .cc-hero-left:before{width:280px;height:280px}
-  .cc-portrait{height:270px;width:220px;max-width:220px}
+  .cc-hero-left:before{left:63%;width:230px;height:230px}
+  .cc-portrait{height:210px;width:162px;max-width:162px;margin-left:8px}
   .cc-title h1{font-size:clamp(36px,6.5vw,54px);white-space:normal}
   .cc-signature-side{font-size:42px}
 }
 @media(max-width:620px){
   .cc-brand strong{font-size:15px;max-width:160px}
-  .cc-hero-left:before{width:255px;height:255px}
-  .cc-portrait{height:250px;width:205px;max-width:205px}
+  .cc-hero-left:before{left:55%;width:220px;height:220px}
+  .cc-portrait{height:195px;width:150px;max-width:150px;margin-left:4px}
   .cc-title h1{font-size:clamp(32px,9.5vw,44px);letter-spacing:.025em}
   .cc-signature-side{font-size:39px}
 }
