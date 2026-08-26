@@ -8,4 +8,10 @@
 .kenya-flag{position:relative;display:block;width:31px;height:21px;border-radius:2px;overflow:hidden;background:linear-gradient(to bottom,#111 0 28%,#fff 28% 34%,#b3131b 34% 66%,#fff 66% 72%,#111 72% 100%);box-shadow:0 0 7px #000,0 0 5px #00e7f544}
 .kenya-flag:before{content:"";position:absolute;left:50%;top:50%;width:8px;height:15px;transform:translate(-50%,-50%);background:#fff;border-radius:48% 48% 44% 44%;box-shadow:0 0 0 1px #111}
 .kenya-flag:after{content:"";position:absolute;left:50%;top:50%;width:3px;height:17px;transform:translate(-50%,-50%);background:#111;border-radius:2px;box-shadow:0 0 0 1px #b3131b}
+
+/* Real geographic outline of Kenya in the About Me panel. Public-domain map source: Wikimedia Commons, File:Kenya map.svg. */
+.cc-about:after{display:none!important}
+.cc-about{background-image:url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Kenya_map.svg");background-repeat:no-repeat;background-position:right 16px bottom 12px;background-size:112px 132px;background-blend-mode:screen}
+@media(max-width:620px){.cc-about{background-size:92px 108px;background-position:right 10px bottom 10px}}
+
 @media(max-width:950px){.cc-sidebar{overflow-y:visible;overflow-x:visible}}
