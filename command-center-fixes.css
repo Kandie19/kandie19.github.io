@@ -9,9 +9,13 @@
 .kenya-flag:before{content:"";position:absolute;left:50%;top:50%;width:8px;height:15px;transform:translate(-50%,-50%);background:#fff;border-radius:48% 48% 44% 44%;box-shadow:0 0 0 1px #111}
 .kenya-flag:after{content:"";position:absolute;left:50%;top:50%;width:3px;height:17px;transform:translate(-50%,-50%);background:#111;border-radius:2px;box-shadow:0 0 0 1px #b3131b}
 
-/* Real geographic outline of Kenya in the About Me panel. Public-domain map source: Wikimedia Commons, File:Kenya map.svg. */
-.cc-about:after{display:none!important}
-.cc-about{background-image:url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Kenya_map.svg");background-repeat:no-repeat;background-position:right 16px bottom 12px;background-size:112px 132px;background-blend-mode:screen}
-@media(max-width:620px){.cc-about{background-size:92px 108px;background-position:right 10px bottom 10px}}
+/* Kenya silhouette: real geographic outline, rendered as a subtle cyan technical/holographic mark to match the command-center aesthetic. */
+.cc-about{position:relative;isolation:isolate}
+.cc-about:after{content:"";position:absolute;right:14px;bottom:10px;width:112px;height:130px;z-index:0;pointer-events:none;opacity:.20;filter:drop-shadow(0 0 5px #00e7f533);background:
+ radial-gradient(circle at 50% 50%,#00e7f5 0 1px,transparent 1.7px) 0 0/6px 6px,
+ linear-gradient(145deg,#00e7f5cc,#00a8b955);-webkit-mask-image:url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Kenya_map.svg");mask-image:url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Kenya_map.svg");-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+.cc-about:before{content:"";position:absolute;right:14px;bottom:10px;width:112px;height:130px;z-index:0;pointer-events:none;opacity:.12;filter:blur(4px);background:#00e7f5;-webkit-mask-image:url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Kenya_map.svg");mask-image:url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Kenya_map.svg");-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+.cc-about>*{position:relative;z-index:1}
+@media(max-width:620px){.cc-about:before,.cc-about:after{right:10px;bottom:10px;width:92px;height:108px}}
 
 @media(max-width:950px){.cc-sidebar{overflow-y:visible;overflow-x:visible}}
