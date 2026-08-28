@@ -12,3 +12,6 @@
 /* Signature belongs to the identity rail, not the page footer. */
 .cc-signature-side{margin:14px 4px 4px;text-align:center;font-family:'Bodoni Moda','Cormorant Garamond',Georgia,serif;font-style:italic;font-size:28px;font-weight:600;line-height:.9;letter-spacing:.01em;color:#e6c46f;text-shadow:0 1px 1px #000,0 0 9px #e6c46f44,0 0 20px #e6c46f1f;white-space:nowrap}.cc-signature-side small{display:block;margin-top:8px;font-family:Inter,system-ui,sans-serif;font-style:normal;font-size:7px;letter-spacing:.16em;color:var(--cyan)}
 @media(max-width:1250px){.cc-kicker{letter-spacing:.22em}.cc-title p{letter-spacing:.18em}.cc-metric small{font-size:10px}.cc-signature-side{font-size:25px}}@media(max-width:950px){.cc-sidebar{overflow-y:visible;overflow-x:visible}.cc-main:before{position:absolute}.cc-signature-side{font-size:32px}}@media(max-width:620px){.cc-about:after{right:10px;bottom:10px;width:92px;height:108px;opacity:.72}.cc-kicker{letter-spacing:.16em}.cc-signature-side{font-size:29px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cc-card,.cc-btn,.cc-chip{transition:none}}
+/* Final instruction: remove the decorative Kelvin logo appended to the hero name. */
+.cc-title:after{display:none!important;content:none!important}
+.cc-title{padding-right:clamp(18px,2.2vw,42px)!important}
