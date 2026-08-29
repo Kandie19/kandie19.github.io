@@ -23,31 +23,18 @@ REDIRECTS = {"about.html": "overview.html", "achievements.html": "dossier.html",
 
 
 def clean_existing_seo(head: str) -> str:
-    patterns = [
-        r'\s*<!-- PRODUCTION-SEO -->.*?<!-- /PRODUCTION-SEO -->\s*',
-        r'\s*<link[^>]+rel=["\']canonical["\'][^>]*>',
-        r'\s*<meta[^>]+name=["\']description["\'][^>]*>',
-        r'\s*<meta[^>]+name=["\']robots["\'][^>]*>',
-        r'\s*<meta[^>]+name=["\']author["\'][^>]*>',
-        r'\s*<meta[^>]+name=["\']keywords["\'][^>]*>',
-        r'\s*<meta[^>]+property=["\']og:[^"\']+["\'][^>]*>',
-        r'\s*<meta[^>]+name=["\']twitter:[^"\']+["\'][^>]*>',
-        r'\s*<script[^>]+type=["\']application/ld\+json["\'][^>]*>.*?</script>',
-    ]
-    for pattern in patterns:
-        head = re.sub(pattern, "", head, flags=re.I | re.S)
+    patterns = [r'\s*<!-- PRODUCTION-SEO -->.*?<!-- /PRODUCTION-SEO -->\s*', r'\s*<link[^>]+rel=["\']canonical["\'][^>]*>', r'\s*<meta[^>]+name=["\']description["\'][^>]*>', r'\s*<meta[^>]+name=["\']robots["\'][^>]*>', r'\s*<meta[^>]+name=["\']author["\'][^>]*>', r'\s*<meta[^>]+name=["\']keywords["\'][^>]*>', r'\s*<meta[^>]+property=["\']og:[^"\']+["\'][^>]*>', r'\s*<meta[^>]+name=["\']twitter:[^"\']+["\'][^>]*>', r'\s*<script[^>]+type=["\']application/ld\+json["\'][^>]*>.*?</script>']
+    for pattern in patterns: head = re.sub(pattern, "", head, flags=re.I | re.S)
     return head
 
 
 def schema_for(filename: str, meta: dict) -> dict:
-    graph = [
-        {"@type": "Person", "@id": PERSON_ID, "name": "Kelvin Kandie", "url": BASE + "/", "jobTitle": "Systems Architect", "description": "Systems Architect, AI & Cybersecurity Engineer, and builder of intelligent, scalable and secure systems.", "image": f"{BASE}/profile.jpg.png", "sameAs": ["https://github.com/Kandie19", "https://www.linkedin.com/in/kelvin-kandie/", X_URL, "https://www.instagram.com/kandie_masasabi/"], "knowsAbout": ["Systems Architecture", "Artificial Intelligence", "Cybersecurity", "Distributed Systems", "Cloud Architecture", "Data Engineering", "DevOps and Automation", "Software Engineering"]},
-        {"@type": "WebSite", "@id": SITE_ID, "url": BASE + "/", "name": "Kelvin Kandie | Systems Architect", "description": "Executive technology portfolio of Kelvin Kandie.", "publisher": {"@id": PERSON_ID}},
-        {"@type": meta["schema_type"], "@id": f"{BASE}{meta['path']}#page", "url": f"{BASE}{meta['path']}", "name": meta["title"], "description": meta["description"], "isPartOf": {"@id": SITE_ID}, "about": {"@id": PERSON_ID}},
-    ]
-    if filename == "index.html": graph[-1]["mainEntity"] = {"@id": PERSON_ID}
-    if filename == "aegis.html":
-        graph.append({"@type": "SoftwareApplication", "@id": f"{BASE}/aegis.html#aegis", "name": "AEGIS Security Platform", "applicationCategory": "SecurityApplication", "operatingSystem": "Cross-platform", "description": "Security platform concept focused on contextual intelligence, risk assessment, decision support and controlled response.", "creator": {"@id": PERSON_ID}, "url": f"{BASE}/aegis.html"})
+    person = {"@type": "Person", "@id": PERSON_ID, "name": "Kelvin Kandie", "url": BASE + "/", "jobTitle": "Systems Architect", "description": "Systems Architect, AI & Cybersecurity Engineer, and builder of intelligent, scalable and secure systems.", "image": f"{BASE}/profile.jpg.png", "sameAs": ["https://github.com/Kandie19", "https://www.linkedin.com/in/kelvin-kandie/", X_URL, "https://www.instagram.com/kandie_masasabi/"], "knowsAbout": ["Systems Architecture", "Artificial Intelligence", "Cybersecurity", "Distributed Systems", "Cloud Architecture", "Data Engineering", "DevOps and Automation", "Software Engineering"]}
+    page = {"@type": meta["schema_type"], "@id": f"{BASE}{meta['path']}#page", "url": f"{BASE}{meta['path']}", "name": meta["title"], "description": meta["description"], "isPartOf": {"@id": SITE_ID}, "about": {"@id": PERSON_ID}}
+    if meta["schema_type"] == "ProfilePage": page["mainEntity"] = {"@id": PERSON_ID}
+    if filename == "index.html": page["mainEntity"] = {"@id": PERSON_ID}
+    graph = [person, {"@type": "WebSite", "@id": SITE_ID, "url": BASE + "/", "name": "Kelvin Kandie | Systems Architect", "description": "Executive technology portfolio of Kelvin Kandie.", "publisher": {"@id": PERSON_ID}}, page]
+    if filename == "aegis.html": graph.append({"@type": "SoftwareApplication", "@id": f"{BASE}/aegis.html#aegis", "name": "AEGIS Security Platform", "applicationCategory": "SecurityApplication", "operatingSystem": "Cross-platform", "description": "Security platform concept focused on contextual intelligence, risk assessment, decision support and controlled response.", "creator": {"@id": PERSON_ID}, "url": f"{BASE}/aegis.html"})
     return {"@context": "https://schema.org", "@graph": graph}
 
 
