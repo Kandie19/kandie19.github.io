@@ -14,11 +14,12 @@ Allow: /articles/
 Allow: /articles/index.html
 Allow: /articles/ai-in-kenya-beyond-the-hype.html
 Allow: /articles/feed.xml
+Allow: /llms.txt
+Allow: /seo/sameas.json
 
 # Redirect-only legacy surfaces are discoverable but not canonical
 Allow: /about.html
 Allow: /achievements.html
-Allow: /certifications.html
 Allow: /experience.html
 Allow: /expertise.html
 
