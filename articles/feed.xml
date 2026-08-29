@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Kelvin Kandie — Articles &amp; Research</title>
+    <link>https://kandie19.github.io/articles/</link>
+    <description>Strategic technology analysis and research by Kelvin Kandie on AI, cybersecurity, systems architecture and technology in Africa.</description>
+    <language>en-KE</language>
+    <lastBuildDate>Sat, 29 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>AI in Kenya: Beyond the Hype — Building What Matters</title>
+      <link>https://kandie19.github.io/articles/ai-in-kenya-beyond-the-hype.html</link>
+      <guid isPermaLink="true">https://kandie19.github.io/articles/ai-in-kenya-beyond-the-hype.html</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 GMT</pubDate>
+      <description>A strategic analysis of Kenya's transition from AI adoption toward durable national AI capability.</description>
+    </item>
+  </channel>
+</rss>
