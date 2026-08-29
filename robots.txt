@@ -1,4 +1,21 @@
 User-agent: *
 Allow: /
 
+# Canonical public portfolio surfaces
+Allow: /index.html
+Allow: /overview.html
+Allow: /aegis.html
+Allow: /architecture.html
+Allow: /engineering.html
+Allow: /repositories.html
+Allow: /dossier.html
+Allow: /contact.html
+
+# Redirect-only legacy surfaces are discoverable but not canonical
+Allow: /about.html
+Allow: /achievements.html
+Allow: /certifications.html
+Allow: /experience.html
+Allow: /expertise.html
+
 Sitemap: https://kandie19.github.io/sitemap.xml
