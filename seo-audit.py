@@ -5,7 +5,6 @@ from html.parser import HTMLParser
 import json
 import re
 import xml.etree.ElementTree as ET
-from urllib.parse import urljoin
 
 BASE = "https://kandie19.github.io"
 ROOT = Path("out") if Path("out").is_dir() else Path(".")
@@ -30,7 +29,6 @@ class HeadParser(HTMLParser):
         self._buf = []
         self.h1_count = 0
         self.images = []
-        self.anchors = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -48,10 +46,6 @@ class HeadParser(HTMLParser):
             self.h1_count += 1
         elif tag == "img":
             self.images.append(attrs)
-        elif tag == "a":
-            href = attrs.get("href", "")
-            if href:
-                self.anchors.append(href)
 
     def handle_data(self, data):
         if self.in_title:
@@ -80,7 +74,8 @@ def meta_value(parser, name=None, prop=None):
 
 def canonical(parser):
     for item in parser.links:
-        if item.get("rel", "").lower() == "canonical":
+        rel = item.get("rel", "").lower()
+        if "canonical" in rel.split():
             return item.get("href", "")
     return ""
 
@@ -90,8 +85,17 @@ def page_url(path: Path) -> str:
     return BASE + "/" if rel == "index.html" else BASE + "/" + rel
 
 
-def is_redirect_page(text: str) -> bool:
-    return bool(re.search(r'<meta[^>]+http-equiv=["\']refresh["\'][^>]+url=', text, re.I))
+def refresh_target(html: str) -> str:
+    match = re.search(
+        r'<meta[^>]+http-equiv=["\']refresh["\'][^>]+content=["\']\s*0\s*;\s*url=([^"\']+)["\'][^>]*>',
+        html,
+        flags=re.I,
+    )
+    return match.group(1).strip() if match else ""
+
+
+def is_redirect_page(html: str) -> bool:
+    return bool(refresh_target(html))
 
 
 def audit_file(path: Path):
@@ -100,6 +104,7 @@ def audit_file(path: Path):
     parser.feed(html)
     issues = []
     warnings = []
+
     title = parser.title.strip()
     description = meta_value(parser, name="description")
     robots = meta_value(parser, name="robots").lower()
@@ -108,43 +113,65 @@ def audit_file(path: Path):
     og_description = meta_value(parser, prop="og:description")
     og_image = meta_value(parser, prop="og:image")
     twitter_card = meta_value(parser, name="twitter:card")
-    redirect = is_redirect_page(html)
 
+    redirect = is_redirect_page(html)
+    legacy_target = LEGACY.get(path.name)
     if redirect:
-        target = LEGACY.get(path.name)
         if "noindex" not in robots:
             issues.append("redirect page missing noindex")
-        if target and canon and not canon.endswith(target):
-            issues.append(f"redirect canonical should target {target}")
+        if legacy_target:
+            expected = BASE + legacy_target
+            if not canon or canon.rstrip("/") != expected.rstrip("/"):
+                issues.append(f"redirect canonical should target {legacy_target}")
+            target = refresh_target(html)
+            if not (target.startswith(legacy_target) or target.startswith(expected)):
+                issues.append(f"redirect target should be {legacy_target}")
         return issues, warnings
 
-    expected_url = page_url(path)
-    if not title: issues.append("missing title")
-    elif len(title) > 65: warnings.append(f"title length {len(title)}")
-    if not description: issues.append("missing description")
-    elif len(description) > 170: warnings.append(f"description length {len(description)}")
-    if not canon: issues.append("missing canonical")
-    elif canon.rstrip("/") != expected_url.rstrip("/"): issues.append(f"canonical mismatch: {canon}")
-    if "noindex" in robots: warnings.append("noindex")
-    if not og_title: warnings.append("missing og:title")
-    if not og_description: warnings.append("missing og:description")
-    if not og_image: warnings.append("missing og:image")
-    if twitter_card != "summary_large_image": warnings.append("missing/weak twitter card")
-    if parser.h1_count == 0: issues.append("missing H1")
-    elif parser.h1_count > 1: warnings.append(f"multiple H1s ({parser.h1_count})")
+    if not title:
+        issues.append("missing title")
+    elif len(title) > 65:
+        warnings.append(f"title length {len(title)}")
+    if not description:
+        issues.append("missing description")
+    elif len(description) > 170:
+        warnings.append(f"description length {len(description)}")
+    if not canon:
+        issues.append("missing canonical")
+    else:
+        expected = page_url(path)
+        if canon.rstrip("/") != expected.rstrip("/"):
+            issues.append(f"canonical mismatch: {canon}")
+    if "noindex" in robots:
+        warnings.append("noindex")
+    if not og_title:
+        warnings.append("missing og:title")
+    if not og_description:
+        warnings.append("missing og:description")
+    if not og_image:
+        warnings.append("missing og:image")
+    if twitter_card != "summary_large_image":
+        warnings.append("missing/weak twitter card")
+    if parser.h1_count == 0:
+        issues.append("missing H1")
+    elif parser.h1_count > 1:
+        warnings.append(f"multiple H1s ({parser.h1_count})")
+
     if not parser.jsonld:
         warnings.append("missing JSON-LD")
     else:
         for block in parser.jsonld:
             try:
                 json.loads(block)
-            except json.JSONDecodeError:
-                issues.append("invalid JSON-LD")
+            except json.JSONDecodeError as exc:
+                issues.append(f"invalid JSON-LD: {exc.msg}")
                 break
+
     for img in parser.images:
         if "src" in img and not img.get("alt", "").strip():
             warnings.append("image missing alt text")
             break
+
     return issues, warnings
 
 
@@ -182,8 +209,9 @@ def main():
             print(f"  ERROR: {item}")
         for item in warnings:
             print(f"  WARN:  {item}")
-    for item in audit_sitemap():
-        total_issues += 1
+    sitemap_issues = audit_sitemap()
+    total_issues += len(sitemap_issues)
+    for item in sitemap_issues:
         print(f"[FAIL] sitemap: {item}")
     print(f"\nAudit complete: {len(files)} HTML files, {total_issues} errors, {total_warnings} warnings")
     raise SystemExit(1 if total_issues else 0)
