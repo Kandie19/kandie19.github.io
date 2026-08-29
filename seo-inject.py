@@ -2,17 +2,12 @@ from pathlib import Path
 import json
 import re
 
-# GitHub Pages files live at the repository root. If a future build exports to
-# ./out, the script can operate on that directory automatically.
 ROOT = Path("out") if Path("out").is_dir() else Path(".")
 BASE = "https://kandie19.github.io"
 PERSON_ID = f"{BASE}/#person"
 SITE_ID = f"{BASE}/#website"
 X_URL = "https://x.com/kandiemasasabi"
 
-# Only pages for which this script owns the canonical SEO block are listed.
-# Other pages are intentionally left untouched so their existing structured
-# data and editorial metadata cannot be overwritten accidentally.
 PAGES = {
     "index.html": {"title": "Kelvin Kandie | Systems Architect, AI & Cybersecurity Engineer", "description": "Kelvin Kandie is a Systems Architect, AI and Cybersecurity Engineer building intelligent, secure and scalable technology platforms from Kenya for the world.", "type": "profile", "schema_type": "ProfilePage", "image": f"{BASE}/profile.jpg.png", "path": "/", "section": "Executive Portfolio"},
     "overview.html": {"title": "Executive Overview | Kelvin Kandie", "description": "Executive overview of Kelvin Kandie, covering systems architecture, artificial intelligence, cybersecurity, distributed systems, cloud architecture and intelligent software engineering.", "type": "website", "schema_type": "ProfilePage", "image": f"{BASE}/profile.jpg.png", "path": "/overview.html", "section": "Executive Overview"},
@@ -27,18 +22,8 @@ PAGES = {
 REDIRECTS = {"about.html": "overview.html", "achievements.html": "dossier.html", "certifications.html": "dossier.html", "experience.html": "dossier.html", "expertise.html": "overview.html"}
 
 
-def remove_managed_block(head: str) -> str:
-    return re.sub(r'\s*<!-- PRODUCTION-SEO -->.*?<!-- /PRODUCTION-SEO -->\s*', "\n", head, flags=re.I | re.S)
-
-
-def remove_duplicate_tag(head: str, pattern: str) -> str:
-    # Remove only duplicate SEO tags we explicitly manage. Existing JSON-LD
-    # outside our marker is never touched.
-    return re.sub(pattern, "", head, count=0, flags=re.I | re.S)
-
-
 def clean_managed_seo(head: str) -> str:
-    head = remove_managed_block(head)
+    head = re.sub(r'\s*<!-- PRODUCTION-SEO -->.*?<!-- /PRODUCTION-SEO -->\s*', "\n", head, flags=re.I | re.S)
     managed = [
         r'\s*<link[^>]+rel=["\']canonical["\'][^>]*>',
         r'\s*<meta[^>]+name=["\']description["\'][^>]*>',
@@ -48,7 +33,7 @@ def clean_managed_seo(head: str) -> str:
         r'\s*<meta[^>]+name=["\']twitter:[^"\']+["\'][^>]*>',
     ]
     for pattern in managed:
-        head = remove_duplicate_tag(head, pattern)
+        head = re.sub(pattern, "", head, flags=re.I | re.S)
     return head
 
 
@@ -63,8 +48,9 @@ def schema_for(filename: str, meta: dict) -> dict:
     return {"@context": "https://schema.org", "@graph": graph}
 
 
-def seo_block(filename: str, meta: dict) -> str:
+def seo_block(filename: str, meta: dict, include_schema: bool) -> str:
     schema = json.dumps(schema_for(filename, meta), ensure_ascii=False, separators=(",", ":"))
+    schema_tag = f'<script type="application/ld+json">{schema}</script>\n' if include_schema else ""
     return f'''<!-- PRODUCTION-SEO -->
 <link rel="canonical" href="{BASE}{meta['path']}">
 <meta name="description" content="{meta['description']}">
@@ -83,8 +69,7 @@ def seo_block(filename: str, meta: dict) -> str:
 <meta name="twitter:description" content="{meta['description']}">
 <meta name="twitter:image" content="{meta['image']}">
 <meta name="twitter:image:alt" content="Kelvin Kandie — {meta['section']}">
-<script type="application/ld+json">{schema}</script>
-<!-- /PRODUCTION-SEO -->
+{schema_tag}<!-- /PRODUCTION-SEO -->
 '''
 
 
@@ -96,11 +81,13 @@ def process_page(filename: str, meta: dict) -> bool:
     match = re.search(r"<head[^>]*>(.*?)</head>", html, flags=re.I | re.S)
     if not match:
         return False
-    head = clean_managed_seo(match.group(1))
+    original_head = match.group(1)
+    had_jsonld = bool(re.search(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>', original_head, flags=re.I | re.S))
+    head = clean_managed_seo(original_head)
     head = re.sub(r"<title>.*?</title>", f"<title>{meta['title']}</title>", head, count=1, flags=re.I | re.S)
     if "<title>" not in head.lower():
         head = f"<title>{meta['title']}</title>" + head
-    head = seo_block(filename, meta) + head
+    head = seo_block(filename, meta, include_schema=not had_jsonld) + head
     path.write_text(html[:match.start(1)] + head + html[match.end(1):], encoding="utf-8")
     return True
 
