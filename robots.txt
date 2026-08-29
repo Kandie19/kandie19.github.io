@@ -10,6 +10,10 @@ Allow: /engineering.html
 Allow: /repositories.html
 Allow: /dossier.html
 Allow: /contact.html
+Allow: /articles/
+Allow: /articles/index.html
+Allow: /articles/ai-in-kenya-beyond-the-hype.html
+Allow: /articles/feed.xml
 
 # Redirect-only legacy surfaces are discoverable but not canonical
 Allow: /about.html
