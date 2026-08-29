@@ -2,14 +2,17 @@ from pathlib import Path
 import json
 import re
 
-# The portfolio is a GitHub Pages static site, so SEO files live at the
-# repository root. Keep an optional build-output override for future use.
+# GitHub Pages files live at the repository root. If a future build exports to
+# ./out, the script can operate on that directory automatically.
 ROOT = Path("out") if Path("out").is_dir() else Path(".")
 BASE = "https://kandie19.github.io"
 PERSON_ID = f"{BASE}/#person"
 SITE_ID = f"{BASE}/#website"
 X_URL = "https://x.com/kandiemasasabi"
 
+# Only pages for which this script owns the canonical SEO block are listed.
+# Other pages are intentionally left untouched so their existing structured
+# data and editorial metadata cannot be overwritten accidentally.
 PAGES = {
     "index.html": {"title": "Kelvin Kandie | Systems Architect, AI & Cybersecurity Engineer", "description": "Kelvin Kandie is a Systems Architect, AI and Cybersecurity Engineer building intelligent, secure and scalable technology platforms from Kenya for the world.", "type": "profile", "schema_type": "ProfilePage", "image": f"{BASE}/profile.jpg.png", "path": "/", "section": "Executive Portfolio"},
     "overview.html": {"title": "Executive Overview | Kelvin Kandie", "description": "Executive overview of Kelvin Kandie, covering systems architecture, artificial intelligence, cybersecurity, distributed systems, cloud architecture and intelligent software engineering.", "type": "website", "schema_type": "ProfilePage", "image": f"{BASE}/profile.jpg.png", "path": "/overview.html", "section": "Executive Overview"},
@@ -24,19 +27,35 @@ PAGES = {
 REDIRECTS = {"about.html": "overview.html", "achievements.html": "dossier.html", "certifications.html": "dossier.html", "experience.html": "dossier.html", "expertise.html": "overview.html"}
 
 
-def clean_existing_seo(head: str) -> str:
-    patterns = [r'\s*<!-- PRODUCTION-SEO -->.*?<!-- /PRODUCTION-SEO -->\s*', r'\s*<link[^>]+rel=["\']canonical["\'][^>]*>', r'\s*<meta[^>]+name=["\']description["\'][^>]*>', r'\s*<meta[^>]+name=["\']robots["\'][^>]*>', r'\s*<meta[^>]+name=["\']author["\'][^>]*>', r'\s*<meta[^>]+name=["\']keywords["\'][^>]*>', r'\s*<meta[^>]+property=["\']og:[^"\']+["\'][^>]*>', r'\s*<meta[^>]+name=["\']twitter:[^"\']+["\'][^>]*>', r'\s*<script[^>]+type=["\']application/ld\+json["\'][^>]*>.*?</script>']
-    for pattern in patterns:
-        head = re.sub(pattern, "", head, flags=re.I | re.S)
+def remove_managed_block(head: str) -> str:
+    return re.sub(r'\s*<!-- PRODUCTION-SEO -->.*?<!-- /PRODUCTION-SEO -->\s*', "\n", head, flags=re.I | re.S)
+
+
+def remove_duplicate_tag(head: str, pattern: str) -> str:
+    # Remove only duplicate SEO tags we explicitly manage. Existing JSON-LD
+    # outside our marker is never touched.
+    return re.sub(pattern, "", head, count=0, flags=re.I | re.S)
+
+
+def clean_managed_seo(head: str) -> str:
+    head = remove_managed_block(head)
+    managed = [
+        r'\s*<link[^>]+rel=["\']canonical["\'][^>]*>',
+        r'\s*<meta[^>]+name=["\']description["\'][^>]*>',
+        r'\s*<meta[^>]+name=["\']robots["\'][^>]*>',
+        r'\s*<meta[^>]+name=["\']author["\'][^>]*>',
+        r'\s*<meta[^>]+property=["\']og:[^"\']+["\'][^>]*>',
+        r'\s*<meta[^>]+name=["\']twitter:[^"\']+["\'][^>]*>',
+    ]
+    for pattern in managed:
+        head = remove_duplicate_tag(head, pattern)
     return head
 
 
 def schema_for(filename: str, meta: dict) -> dict:
     person = {"@type": "Person", "@id": PERSON_ID, "name": "Kelvin Kandie", "url": BASE + "/", "jobTitle": "Systems Architect", "description": "Systems Architect, AI & Cybersecurity Engineer, and builder of intelligent, scalable and secure systems.", "image": f"{BASE}/profile.jpg.png", "sameAs": ["https://github.com/Kandie19", "https://www.linkedin.com/in/kelvin-kandie/", X_URL, "https://www.instagram.com/kandie_masasabi/"], "knowsAbout": ["Systems Architecture", "Artificial Intelligence", "Cybersecurity", "Distributed Systems", "Cloud Architecture", "Data Engineering", "DevOps and Automation", "Software Engineering"]}
     page = {"@type": meta["schema_type"], "@id": f"{BASE}{meta['path']}#page", "url": f"{BASE}{meta['path']}", "name": meta["title"], "description": meta["description"], "isPartOf": {"@id": SITE_ID}, "about": {"@id": PERSON_ID}}
-    if meta["schema_type"] == "ProfilePage":
-        page["mainEntity"] = {"@id": PERSON_ID}
-    if filename == "index.html":
+    if meta["schema_type"] == "ProfilePage" or filename == "index.html":
         page["mainEntity"] = {"@id": PERSON_ID}
     graph = [person, {"@type": "WebSite", "@id": SITE_ID, "url": BASE + "/", "name": "Kelvin Kandie | Systems Architect", "description": "Executive technology portfolio of Kelvin Kandie.", "publisher": {"@id": PERSON_ID}}, page]
     if filename == "aegis.html":
@@ -69,40 +88,36 @@ def seo_block(filename: str, meta: dict) -> str:
 '''
 
 
-def process_page(filename: str, meta: dict) -> None:
+def process_page(filename: str, meta: dict) -> bool:
     path = ROOT / filename
     if not path.exists():
-        return
+        return False
     html = path.read_text(encoding="utf-8")
     match = re.search(r"<head[^>]*>(.*?)</head>", html, flags=re.I | re.S)
     if not match:
-        return
-    head = clean_existing_seo(match.group(1))
+        return False
+    head = clean_managed_seo(match.group(1))
     head = re.sub(r"<title>.*?</title>", f"<title>{meta['title']}</title>", head, count=1, flags=re.I | re.S)
     if "<title>" not in head.lower():
         head = f"<title>{meta['title']}</title>" + head
     head = seo_block(filename, meta) + head
     path.write_text(html[:match.start(1)] + head + html[match.end(1):], encoding="utf-8")
+    return True
 
 
-def process_redirect(filename: str, target: str) -> None:
+def process_redirect(filename: str, target: str) -> bool:
     path = ROOT / filename
     if not path.exists():
-        return
+        return False
     html = path.read_text(encoding="utf-8")
     html = re.sub(r'<meta\s+http-equiv=["\']refresh["\'][^>]*>', f'<meta http-equiv="refresh" content="0;url={target}">', html, flags=re.I)
     if 'name="robots"' not in html.lower():
         html = html.replace("</head>", '<meta name="robots" content="noindex,follow">\n</head>', 1)
     path.write_text(html, encoding="utf-8")
+    return True
 
 
 if __name__ == "__main__":
-    processed = 0
-    for filename, meta in PAGES.items():
-        before = ROOT / filename
-        process_page(filename, meta)
-        if before.exists():
-            processed += 1
-    for filename, target in REDIRECTS.items():
-        process_redirect(filename, target)
-    print(f"SEO injection complete: {processed} canonical pages processed from {ROOT.resolve()}")
+    processed = sum(process_page(filename, meta) for filename, meta in PAGES.items())
+    redirects = sum(process_redirect(filename, target) for filename, target in REDIRECTS.items())
+    print(f"SEO injection complete: {processed} canonical pages processed, {redirects} redirect pages checked from {ROOT.resolve()}")
