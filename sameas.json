@@ -1,0 +1,28 @@
+{
+  "name": "Kelvin Kandie",
+  "url": "https://kandie19.github.io/",
+  "jobTitle": "Systems Architect",
+  "description": "Systems Architect, AI & Cybersecurity Engineer, and builder of intelligent, scalable and secure systems.",
+  "sameAs": [
+    "https://github.com/Kandie19",
+    "https://www.linkedin.com/in/kelvin-kandie/",
+    "https://x.com/kandiemasasabi",
+    "https://www.instagram.com/kandie_masasabi/"
+  ],
+  "knowsAbout": [
+    "Systems Architecture",
+    "Artificial Intelligence",
+    "Cybersecurity",
+    "Distributed Systems",
+    "Cloud Architecture",
+    "Data Engineering",
+    "DevOps and Automation",
+    "Software Engineering"
+  ],
+  "featuredWork": [
+    {
+      "name": "AEGIS Security Platform",
+      "url": "https://kandie19.github.io/aegis.html"
+    }
+  ]
+}
