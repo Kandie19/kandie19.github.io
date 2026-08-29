@@ -1,0 +1,34 @@
+# Kelvin Kandie
+
+> Systems Architect, AI & Cybersecurity Engineer, and technology builder.
+
+## Canonical portfolio
+- https://kandie19.github.io/
+
+## Executive profile
+- https://kandie19.github.io/overview.html — Executive overview covering systems architecture, AI, cybersecurity, intelligent systems, scalable engineering and strategic technology direction.
+- https://kandie19.github.io/dossier.html — Professional dossier covering technical competency, architecture principles and public product boundaries.
+- https://kandie19.github.io/contact.html — Professional engagement and contact information.
+
+## Technical work
+- https://kandie19.github.io/architecture.html — Systems architecture principles: clarity, boundaries, resilience, observability, scalability and security by design.
+- https://kandie19.github.io/engineering.html — Public synthetic engineering lab demonstrating security-command experience without production access or proprietary implementation.
+- https://kandie19.github.io/repositories.html — Public repository trail covering software engineering, systems, security, applications and current intelligent-systems work.
+- https://kandie19.github.io/aegis.html — Public product-level overview of AEGIS Security Platform, an AI-enabled security and intelligence concept. Proprietary implementation remains private.
+
+## Research and writing
+- https://kandie19.github.io/articles/ — Articles and strategic technology research.
+- https://kandie19.github.io/articles/ai-in-kenya-beyond-the-hype.html — AI in Kenya: Beyond the Hype — Building What Matters. Strategic analysis of AI adoption, national capability, infrastructure, compute, context, competency, research, cybersecurity, governance, commercialisation and strategic autonomy.
+- https://kandie19.github.io/articles/feed.xml — RSS feed for published articles.
+
+## Core topics
+Systems Architecture; Artificial Intelligence; AI Engineering; Cybersecurity; Intelligent Systems; Distributed Systems; Cloud Architecture; Software Engineering; Data Engineering; Real-Time Systems; Technology Strategy; AI in Kenya; African Technology.
+
+## Public identity references
+- https://github.com/Kandie19
+- https://www.linkedin.com/in/kelvin-kandie/
+- https://x.com/kandiemasasabi
+- https://www.instagram.com/kandie_masasabi/
+
+## Publication boundary
+Public portfolio pages communicate professional expertise, product direction, research and selected engineering evidence. Private source code, private infrastructure, proprietary models, internal service topology, private datasets and product-specific implementation details are not published as part of the public portfolio.
