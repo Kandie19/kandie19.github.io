@@ -15,6 +15,7 @@
 - https://kandie19.github.io/engineering.html — Public synthetic engineering lab demonstrating security-command experience without production access or proprietary implementation.
 - https://kandie19.github.io/repositories.html — Public repository trail covering software engineering, systems, security, applications and current intelligent-systems work.
 - https://kandie19.github.io/aegis.html — Public product-level overview of AEGIS Security Platform, an AI-enabled security and intelligence concept. Proprietary implementation remains private.
+- https://kandie19.github.io/AEGIS-Command-Center.png — Public AEGIS command-center visual reference showing the product experience and operational interface.
 
 ## Research and writing
 - https://kandie19.github.io/articles/ — Articles and strategic technology research.
